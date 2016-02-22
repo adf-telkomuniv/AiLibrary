@@ -1,8 +1,8 @@
 # Genetic Algorithm lib using Java
 
+---
 ## Class Setting.java
 Settings for Genetic Algorithm Optimization
-
 ### Parameters
 * number of Gen in a Chromosome *required*
   * integer 1-n
@@ -21,9 +21,9 @@ Settings for Genetic Algorithm Optimization
 * maximum Value in each gen in a Chromosome
   * integer
   
+---
 ## Class OperatorOptions.java
 Settings for Operator Options in Genetic Algorithm
-
 ### Parameters
 * parentSelection
   * integer 0-5 (default = 0)
@@ -71,6 +71,7 @@ Settings for Operator Options in Genetic Algorithm
   * 10 : nScramble Mutation (Permutation Chromosome)
 * pattern
 
+---
 ## Interface ChromosomeEvaluator.java
 Use this interface and implement method 
 ```java
@@ -79,9 +80,11 @@ public abstract double evaluateFitness(Chromosome c);
 define method evaluateFitness that returns double falue as the quality of Chromosome c <br>
 Chromosome c may be Binary, Integer, Real, or Permutation
 
+---
 ## Class GeneticAlgorithm.java
 Main Library Class for Genetic Algorithm System <br>
 
+---
 ## Using Genetic Algorithm Library
 use : 
 ```java
