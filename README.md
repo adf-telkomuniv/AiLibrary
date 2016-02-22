@@ -35,7 +35,7 @@ Main Library Class for Genetic Algorithm System
 ```
 
 ---
-## Genetic Algorithm lib using Java
+## A* Algorithm lib using Java
 ### Class AStar.java
 Main Library Class for A* Algorithm System <br>
 generate shortest apth from node Start to Goal <br>
