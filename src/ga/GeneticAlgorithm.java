@@ -50,7 +50,7 @@ public class GeneticAlgorithm {
                 fitnessList[0] = fitness;
                 if (fitness > bestFitness) {
                     bestFitness = fitness;
-                    bestIndv = indv;
+                    bestIndv = indv.clone();
                 }
             }
             maxFGen[gen] = bestFitness;
