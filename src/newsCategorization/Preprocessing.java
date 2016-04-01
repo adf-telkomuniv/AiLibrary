@@ -5,12 +5,16 @@
  */
 package newsCategorization;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -37,20 +41,26 @@ public class Preprocessing {
     }
 
     public String[] stopwordRemoval(String[] tokens) {
-        return tokens;
+        String[] stopword = loadFile("stopword.txt");
+        List<String> stp = Arrays.asList(stopword);
+        List<String> tkn = Arrays.asList(tokens);
+        List<String> res = tkn.stream()
+                .filter(o -> !(stp.contains(o)))
+                .collect(Collectors.toList());
+        return res.toArray(new String[0]);
     }
 
     public String[] preprocess(String article) {
         String[] result;
-        article.toLowerCase();
+        article = article.toLowerCase();
         article = removeUrl(article);
-        article.replaceAll("[^a-zA-Z|^ ]", "");
+        article = article.replaceAll("[^a-zA-Z|^ ]", "");
         String[] tokens = article.split(" ");
 
         String[] rootword = new String[1];
 
-        Set<String> rootwordSet = new HashSet<String>(Arrays.asList(rootword));
-        Set<String> tokenSet = new HashSet<String>(Arrays.asList(tokens));
+        Set<String> rootwordSet = new HashSet(Arrays.asList(rootword));
+        Set<String> tokenSet = new HashSet(Arrays.asList(tokens));
         rootwordSet.retainAll(tokenSet);
 
         String[] nonKataDasar = rootwordSet.toArray(new String[rootwordSet.size()]);
@@ -73,6 +83,20 @@ public class Preprocessing {
 
     public HashMap<String, Double> getPreprocessedData() {
         return preprocessedData;
+    }
+
+    public String[] loadFile(String filename) {
+        String s = "";
+        try (BufferedReader b = new BufferedReader(new FileReader(filename))) {
+            String line;
+            while ((line = b.readLine()) != null) {
+                s = s + line + "\n";
+            }
+
+        } catch (Exception e) {
+
+        }
+        return s.split("\n");
     }
 
 }

@@ -11,7 +11,7 @@ package newsCategorization;
  */
 public class NaiveBayes {
     
-    
+//    private 
     
     
 }
