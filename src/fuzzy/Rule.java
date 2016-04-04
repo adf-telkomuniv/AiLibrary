@@ -53,6 +53,10 @@ public class Rule implements Comparable<Rule> {
         inputLing.remove(i);
     }
 
+    public String getInput(int i) {
+        return inputLing.get(i);
+    }
+
     public String toString() {
         String s = "if " + inputLing.get(0);
         for (int i = 1; i < inputLing.size(); i++) {

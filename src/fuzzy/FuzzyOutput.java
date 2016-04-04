@@ -27,6 +27,14 @@ public class FuzzyOutput implements Comparable<FuzzyOutput> {
         return fuzzyValue;
     }
 
+    public void setLinguistic(String linguistic) {
+        this.linguistic = linguistic;
+    }
+
+    public void setFuzzyValue(double fuzzyValue) {
+        this.fuzzyValue = fuzzyValue;
+    }
+
     @Override
     public int compareTo(FuzzyOutput o) {
         return this.linguistic.compareTo(o.getLinguistic());

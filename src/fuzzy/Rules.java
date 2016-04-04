@@ -97,6 +97,28 @@ public class Rules {
         }
     }
 
+    public FuzzyOutput checkRule(FuzzyOutput[] input) {
+        boolean ok;
+        double val = input[0].getFuzzyValue();
+        for (int i = 1; i < input.length; i++) {
+            val = Math.min(val, input[i].getFuzzyValue());
+        }
+        for (int i = 0; i < rules.size(); i++) {
+            ok = true;
+            for (int j = 0; j < input.length; j++) {
+                if (!input[j].getLinguistic().equals(rules.get(i).getInput(j))) {
+                    ok = false;
+                    break;
+                }
+            }
+            if (ok) {
+                FuzzyOutput output = new FuzzyOutput(rules.get(i).getOutputLing(), val);
+                return output;
+            }
+        }
+        return null;
+    }
+
     @Override
     public String toString() {
         rules.sort(null);
