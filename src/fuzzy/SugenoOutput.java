@@ -11,10 +11,18 @@ package fuzzy;
  */
 public class SugenoOutput implements CrispOutput {
 
-    private int numLinguistic;
+    private double[] membership;
 
     public SugenoOutput(int numLinguistic) {
-        this.numLinguistic = numLinguistic;
+        membership = new double[numLinguistic];
+    }
+
+    public void setMembership(int numLinguistic, double d) {
+        membership[numLinguistic] = d;
+    }
+
+    public double getMembership(int i) {
+        return membership[i];
     }
 
     @Override

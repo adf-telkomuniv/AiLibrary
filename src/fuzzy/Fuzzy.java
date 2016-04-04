@@ -16,6 +16,7 @@ public class Fuzzy {
 
     private ArrayList<Input> inputCrips;
     private Rules rules;
+    private CrispOutput output;
 
     public Fuzzy() {
         inputCrips = new ArrayList();
@@ -33,6 +34,10 @@ public class Fuzzy {
 
     public void setRules(Rules rules) {
         this.rules = rules;
+    }
+
+    public void setOutput(CrispOutput output) {
+        this.output = output;
     }
 
     public FuzzyOutput[][] fuzzyfy(double[] a) {

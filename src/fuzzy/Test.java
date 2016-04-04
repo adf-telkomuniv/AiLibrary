@@ -52,6 +52,11 @@ public class Test {
         System.out.println(rules);
         f.setRules(rules);
 
+        MamdaniOutput out1 = new MamdaniOutput(3);
+        f.setOutput(out1);
+
+        SugenoOutput out2 = new SugenoOutput(3);
+
 //        System.out.println("aaa");
 //        String ss = r.toString();
 //        System.out.println(ss);
