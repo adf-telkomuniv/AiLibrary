@@ -17,9 +17,14 @@ public class Membership {
     private String linguistic;
     private int lineType[];
 
-    public Membership(String ling) {
-        this.linguistic = ling;
+    public Membership(String linguistic, double[] position) {
+        if (position.length != 4) {
+            throw new IllegalStateException("wrong array position length");
+        }
+        Arrays.sort(position);
         lineType = new int[]{0, 0};
+        this.linguistic = linguistic;
+        this.position = position.clone();
     }
 
     public Membership(String linguistic, double[] position, int[] lineType) {
