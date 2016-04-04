@@ -9,25 +9,50 @@ package fuzzy;
  *
  * @author dee
  */
-public class SugenoOutput implements CrispOutput {
+public class SugenoOutput implements OutputModel {
 
     private double[] membership;
+    private String[] linguistic;
 
     public SugenoOutput(int numLinguistic) {
         membership = new double[numLinguistic];
+        linguistic = new String[numLinguistic];
     }
 
-    public void setMembership(int numLinguistic, double d) {
-        membership[numLinguistic] = d;
+    public SugenoOutput(double[] membership, String[] linguistic) {
+        if (membership.length != linguistic.length) {
+            throw new IllegalStateException("size membership and lingustic must be the same");
+        }
+        this.membership = membership;
+        this.linguistic = linguistic;
+    }
+
+    public void setMembership(int numLinguistic, double membership, String linguistic) {
+        this.membership[numLinguistic] = membership;
+        this.linguistic[numLinguistic] = linguistic;
     }
 
     public double getMembership(int i) {
         return membership[i];
     }
 
+    public String getLinguistic(int i) {
+        return linguistic[i];
+    }
+
     @Override
-    public double defuzzy(FuzzyOutput[] output) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public double defuzzy(FuzzyValue[] output) {
+        double result = 0;
+        double dvd = 0;
+        for (int i = 0; i < output.length; i++) {
+            for (int j = 0; j < linguistic.length; j++) {
+                if (output[i].getLinguistic().equals(linguistic[j])) {
+                    result += output[i].getFuzzyValue() * membership[j];
+                }
+            }
+            dvd += output[i].getFuzzyValue();
+        }
+        return result / dvd;
     }
 
 }

@@ -42,20 +42,50 @@ public class Test {
 
         Rules rules = new Rules();
         String[][] s = new String[2][];
-        s[1] = new String[]{"Cold", "Cool", "Normal", "Warm", "Hot"};
-        s[0] = new String[]{"Dry", "Moist", "Wet"};
+        s[0] = new String[]{"Cold", "Cool", "Normal", "Warm", "Hot"};
+        s[1] = new String[]{"Dry", "Moist", "Wet"};
         String[] out = new String[]{"Short", "Medium", "Long"};
         rules.generate(s, out);
         Rule r = rules.getRule(9);
         r.setOutputLing("Long");
         rules.setRule(9, r);
         System.out.println(rules);
+        System.out.println("===============");
         f.setRules(rules);
 
-        MamdaniOutput out1 = new MamdaniOutput(3);
+        MamdaniOutput out1 = new MamdaniOutput(3, 10);
+        out1.setMembership(0, new Membership("Short", new double[]{0, 0, 20, 28}));
+        out1.setMembership(1, new Membership("Medium", new double[]{20, 28, 40, 48}));
+        out1.setMembership(2, new Membership("Long", new double[]{40, 48, 90, 90}));
         f.setOutput(out1);
+//
+        double[] inp = new double[]{37, 12};
+        FuzzyValue[][] fuzzyInput = f.fuzzyfy(inp);
+        for (int i = 0; i < fuzzyInput.length; i++) {
+            for (int j = 0; j < fuzzyInput[i].length; j++) {
+                FuzzyValue ff = fuzzyInput[i][j];
+                System.out.print(ff.getLinguistic() + " " + ff.getFuzzyValue() + " , ");
+            }
+            System.out.println("");
+        }
 
-        SugenoOutput out2 = new SugenoOutput(3);
+        FuzzyValue[] fuzzyOutput = f.inference(fuzzyInput, rules);
+        System.out.println("--------------");
+        for (int i = 0; i < fuzzyOutput.length; i++) {
+            System.out.println(fuzzyOutput[i].getLinguistic() + " " + fuzzyOutput[i].getFuzzyValue());
+        }
+        System.out.println("----------");
+        double x = f.defuzzify(fuzzyOutput, out1);
+        System.out.println("x = " + x);
+        System.out.println("==============");
+        double x2 = f.processFuzzy(inp);
+        System.out.println("x = " + x2);
+
+        SugenoOutput out2 = new SugenoOutput(new double[]{20, 40, 60},
+                new String[]{"Short", "Medium", "Long"});
+        f.setOutput(out2);
+        x2 = f.processFuzzy(inp);
+        System.out.println("x = " + x2);
 
 //        System.out.println("aaa");
 //        String ss = r.toString();

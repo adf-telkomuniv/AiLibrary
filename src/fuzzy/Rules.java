@@ -40,7 +40,7 @@ public class Rules {
             for (int j = 0; j < inp2.length; j++) {
                 s[j] = input[j][inp2[j]];
             }
-            mins(inp, inp2.length - 1, inp2);
+            mins(inp, 0, inp2);
 //            for (int j = 0; j < s.length; j++) {
 //                System.out.print(s[j]+" ");
 //            }
@@ -63,8 +63,8 @@ public class Rules {
             inp2[x]--;
         } else {
             inp2[x] = inp[x];
-            if (x > 0) {
-                mins(inp, x - 1, inp2);
+            if (x <inp.length-1) {
+                mins(inp, x + 1, inp2);
             } else {
 
             }
@@ -97,7 +97,7 @@ public class Rules {
         }
     }
 
-    public FuzzyOutput checkRule(FuzzyOutput[] input) {
+    public FuzzyValue checkRule(FuzzyValue[] input) {
         boolean ok;
         double val = input[0].getFuzzyValue();
         for (int i = 1; i < input.length; i++) {
@@ -108,11 +108,12 @@ public class Rules {
             for (int j = 0; j < input.length; j++) {
                 if (!input[j].getLinguistic().equals(rules.get(i).getInput(j))) {
                     ok = false;
+//                    System.out.println(i + " " + input[j].getLinguistic() + " not ok " + rules.get(i).getInput(j));
                     break;
                 }
             }
             if (ok) {
-                FuzzyOutput output = new FuzzyOutput(rules.get(i).getOutputLing(), val);
+                FuzzyValue output = new FuzzyValue(rules.get(i).getOutputLing(), val);
                 return output;
             }
         }

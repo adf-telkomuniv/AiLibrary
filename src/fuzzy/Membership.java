@@ -79,7 +79,7 @@ public class Membership {
 
     public double partB(double input) {
         if (lineType[1] == 0) {
-            return -(input - position[3]) / (position[2] - position[3]);
+            return -(input - position[3]) / (position[3] - position[2]);
         }
         if (lineType[1] == 1) {
             double b = (position[2] + position[3]) / 2;
@@ -99,6 +99,10 @@ public class Membership {
 
     public String getLinguistic() {
         return linguistic;
+    }
+
+    public double[] getPosition() {
+        return position;
     }
 
 }

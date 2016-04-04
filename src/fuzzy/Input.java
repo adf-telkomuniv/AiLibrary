@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public class Input {
 
-    private Membership[] membership;
+    protected Membership[] membership;
 
     public Input(int numLinguistic) {
         membership = new Membership[numLinguistic];
@@ -27,14 +27,14 @@ public class Input {
         return membership[i];
     }
 
-    public FuzzyOutput[] fuzzify(double a) {
-        ArrayList<FuzzyOutput> out = new ArrayList();
+    public FuzzyValue[] fuzzify(double a) {
+        ArrayList<FuzzyValue> out = new ArrayList();
         for (Membership l : membership) {
             if (l.isInside(a)) {
                 double fz = l.fuzzify(a);
-                out.add(new FuzzyOutput(l.getLinguistic(), fz));
+                out.add(new FuzzyValue(l.getLinguistic(), fz));
             }
         }
-        return out.toArray(new FuzzyOutput[0]);
+        return out.toArray(new FuzzyValue[0]);
     }
 }

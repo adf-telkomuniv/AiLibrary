@@ -9,8 +9,8 @@ package fuzzy;
  *
  * @author dee
  */
-public interface CrispOutput {
+public interface OutputModel {
 
-    public double defuzzy(FuzzyOutput[] output);
+    public double defuzzy(FuzzyValue[] output);
 
 }

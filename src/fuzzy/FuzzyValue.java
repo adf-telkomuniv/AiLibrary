@@ -9,12 +9,12 @@ package fuzzy;
  *
  * @author dee
  */
-public class FuzzyOutput implements Comparable<FuzzyOutput> {
+public class FuzzyValue implements Comparable<FuzzyValue> {
 
     private String linguistic;
     private double fuzzyValue;
 
-    public FuzzyOutput(String linguistic, double fuzzyValue) {
+    public FuzzyValue(String linguistic, double fuzzyValue) {
         this.linguistic = linguistic;
         this.fuzzyValue = fuzzyValue;
     }
@@ -36,7 +36,7 @@ public class FuzzyOutput implements Comparable<FuzzyOutput> {
     }
 
     @Override
-    public int compareTo(FuzzyOutput o) {
+    public int compareTo(FuzzyValue o) {
         return this.linguistic.compareTo(o.getLinguistic());
     }
 

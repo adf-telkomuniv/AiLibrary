@@ -14,88 +14,42 @@ import java.util.Arrays;
  */
 public class Fuzzy {
 
-    private ArrayList<Input> inputCrips;
+    private ArrayList<Input> inputSystem;
     private Rules rules;
-    private CrispOutput output;
+    private OutputModel outputModel;
 
     public Fuzzy() {
-        inputCrips = new ArrayList();
+        inputSystem = new ArrayList();
         rules = null;
     }
 
     public Fuzzy(Rules rules) {
-        inputCrips = new ArrayList();
+        inputSystem = new ArrayList();
         this.rules = rules;
     }
 
     public void addInput(Input input) {
-        inputCrips.add(input);
+        inputSystem.add(input);
     }
 
     public void setRules(Rules rules) {
         this.rules = rules;
     }
 
-    public void setOutput(CrispOutput output) {
-        this.output = output;
+    public void setOutput(OutputModel outputModel) {
+        this.outputModel = outputModel;
     }
 
-    public FuzzyOutput[][] fuzzyfy(double[] a) {
-        if (a.length != inputCrips.size()) {
+    public FuzzyValue[][] fuzzyfy(double[] crispInput) {
+        if (crispInput.length != inputSystem.size()) {
             throw new IllegalStateException("wrong input size");
         }
-        FuzzyOutput[][] output = new FuzzyOutput[a.length][];
-        for (int i = 0; i < a.length; i++) {
-            FuzzyOutput[] out = inputCrips.get(i).fuzzify(a[i]);
-            output[i] = out;
+        FuzzyValue[][] fuzzyInput = new FuzzyValue[crispInput.length][];
+        for (int i = 0; i < crispInput.length; i++) {
+            FuzzyValue[] out = inputSystem.get(i).fuzzify(crispInput[i]);
+            fuzzyInput[i] = out;
         }
-        return output;
-    }
-
-    public FuzzyOutput[] inference(FuzzyOutput[][] fuzzyOutput) {
-        ArrayList<FuzzyOutput> out = new ArrayList();
-        fuzzyOutput = generate(fuzzyOutput);
-        for (int i = 0; i < fuzzyOutput.length; i++) {
-            FuzzyOutput o = rules.checkRule(fuzzyOutput[i]);
-            boolean found = false;
-            for (int j = 0; j < out.size(); j++) {
-                if (out.get(i).getLinguistic().equals(o.getLinguistic())) {
-                    found = true;
-                    out.get(i).setFuzzyValue(Math.max(out.get(i).getFuzzyValue(), o.getFuzzyValue()));
-                    break;
-                }
-            }
-            if (!found) {
-                out.add(o);
-            }
-        }
-        out.sort(null);
-        return out.toArray(new FuzzyOutput[0]);
-    }
-
-    public FuzzyOutput[][] generate(FuzzyOutput[][] input) {
-        int[] inp = new int[input.length];
-        for (int i = 0; i < inp.length; i++) {
-            inp[i] = input[i].length;
-        }
-        int max = 1;
-        for (int i = 0; i < inp.length; i++) {
-            max *= inp[i];
-        }
-        FuzzyOutput[][] output = new FuzzyOutput[max][];
-        for (int i = 0; i < inp.length; i++) {
-            inp[i]--;
-        }
-        int[] inp2 = inp.clone();
-        for (int i = 0; i < max; i++) {
-            FuzzyOutput s[] = new FuzzyOutput[inp2.length];
-            for (int j = 0; j < inp2.length; j++) {
-                s[j] = input[j][inp2[j]];
-            }
-            mins(inp, inp2.length - 1, inp2);
-            output[i] = s;
-        }
-        return output;
+        return fuzzyInput;
     }
 
     public void mins(int[] inp, int x, int[] inp2) {
@@ -111,4 +65,71 @@ public class Fuzzy {
         }
     }
 
+    public FuzzyValue[][] generate(FuzzyValue[][] input) {
+        int[] inp = new int[input.length];
+        for (int i = 0; i < inp.length; i++) {
+            inp[i] = input[i].length;
+        }
+        int max = 1;
+        for (int i = 0; i < inp.length; i++) {
+            max *= inp[i];
+        }
+        FuzzyValue[][] fuzzyOutput = new FuzzyValue[max][];
+        for (int i = 0; i < inp.length; i++) {
+            inp[i]--;
+        }
+        int[] inp2 = inp.clone();
+        for (int i = 0; i < max; i++) {
+            FuzzyValue s[] = new FuzzyValue[inp2.length];
+            for (int j = 0; j < inp2.length; j++) {
+                s[j] = input[j][inp2[j]];
+            }
+            mins(inp, inp2.length - 1, inp2);
+            fuzzyOutput[i] = s;
+        }
+        return fuzzyOutput;
+    }
+
+    public FuzzyValue[] inference(FuzzyValue[][] fuzzyOutput, Rules rules) {
+        ArrayList<FuzzyValue> out = new ArrayList();
+        fuzzyOutput = generate(fuzzyOutput);
+        for (int i = 0; i < fuzzyOutput.length; i++) {
+            FuzzyValue o = rules.checkRule(fuzzyOutput[i]);
+//            System.out.println("o = " + o);
+//            if(o==null){
+//                continue;
+//            }
+            boolean found = false;
+            for (int j = 0; j < out.size(); j++) {
+                if (out.get(j).getLinguistic().equals(o.getLinguistic())) {
+                    found = true;
+                    out.get(j).setFuzzyValue(Math.max(out.get(j).getFuzzyValue(), o.getFuzzyValue()));
+                    break;
+                }
+            }
+            if (!found) {
+                out.add(o);
+            }
+        }
+        out.sort(null);
+        return out.toArray(new FuzzyValue[0]);
+    }
+
+    public double defuzzify(FuzzyValue[] fuzzyOutput, OutputModel outputModel) {
+        if (outputModel instanceof MamdaniOutput) {
+            MamdaniOutput mamdani = (MamdaniOutput) outputModel;
+            return mamdani.defuzzy(fuzzyOutput);
+        } else if (outputModel instanceof SugenoOutput) {
+            SugenoOutput sugeno = (SugenoOutput) outputModel;
+            return sugeno.defuzzy(fuzzyOutput);
+        }
+        return 0;
+    }
+
+    public double processFuzzy(double[] crispInput) {
+        FuzzyValue[][] fuzzyInput = fuzzyfy(crispInput);
+        FuzzyValue[] fuzzyOutput = inference(fuzzyInput, rules);
+        double crispOutput = defuzzify(fuzzyOutput, outputModel);
+        return crispOutput;
+    }
 }
