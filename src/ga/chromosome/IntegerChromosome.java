@@ -71,7 +71,6 @@ public class IntegerChromosome extends Chromosome {
     @Override
     public IntegerChromosome clone() {
         IntegerChromosome c = new IntegerChromosome(size(), min, max);
-//        c.setGen(this.getGen().clone());
         for (int i = 0; i < gen.length; i++) {
             c.setGen(i, gen[i]);
         }

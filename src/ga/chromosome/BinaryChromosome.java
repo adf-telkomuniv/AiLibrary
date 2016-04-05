@@ -60,7 +60,6 @@ public class BinaryChromosome extends Chromosome {
     @Override
     public BinaryChromosome clone() {
         BinaryChromosome c = new BinaryChromosome(size());
-//        c.setGen(this.getGen().clone());;
         for (int i = 0; i < gen.length; i++) {
             c.setGen(i, gen[i]);
         }

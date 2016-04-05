@@ -28,9 +28,7 @@ public class GSP {
         goal = FileIO.readFileString(goalFile);
 
         // tambahkan semua goal ke dalam stack
-        for (String g : goal) {
-            stack.add(g);
-        }
+        goal.forEach((g) -> stack.add(g));
 
         System.out.println("initial : " + current);
         System.out.println("goal : " + goal);
@@ -222,9 +220,7 @@ public class GSP {
             if (stack.isEmpty() && !cekResult()) {
                 System.out.println(" -- check again -- ");
                 next.nextLine();
-                for (String g : goal) {
-                    stack.add(g);
-                }
+                goal.forEach(g -> stack.add(g));
             }
         }
         boolean result = cekResult();

@@ -100,13 +100,10 @@ public class Mutation {
                 return x;
             }
             int ch = x.getGen()[x2];
-//        System.out.println(x1 + " " + x2);
             for (int i = x2; i > x1 + 1; i--) {
                 x.getGen()[i] = x.getGen()[i - 1];
             }
             x.getGen()[x1 + 1] = ch;
-//            System.arraycopy(ch, x1 + 2, x.getGen(), x1 + 2, x2 - x1);
-//        System.out.println(x);
         }
         return x;
     }

@@ -6,6 +6,7 @@
 package fuzzy;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  *
@@ -24,9 +25,7 @@ public class Rule implements Comparable<Rule> {
     public Rule(String[] input, String outputLing) {
         this.outputLing = outputLing;
         inputLing = new ArrayList();
-        for (int i = 0; i < input.length; i++) {
-            inputLing.add(input[i]);
-        }
+        inputLing.addAll(Arrays.asList(input));
     }
 
     public String getOutputLing() {
@@ -57,6 +56,7 @@ public class Rule implements Comparable<Rule> {
         return inputLing.get(i);
     }
 
+    @Override
     public String toString() {
         String s = "if " + inputLing.get(0);
         for (int i = 1; i < inputLing.size(); i++) {

@@ -66,7 +66,6 @@ public class CrossOver {
             point[i] = random.nextInt(p1.size() - 1);
         }
         Arrays.sort(point);
-//        System.out.println(point[0]+","+point[1]);
         Chromosome[] child = createChilds(p1, p2);
         int p = 0;
         boolean swap = false;
@@ -125,7 +124,6 @@ public class CrossOver {
         int[] point = {random.nextInt(p1.size() - 1), random.nextInt(p1.size() - 1)};
         Chromosome[] child = createChilds(p1, p2);
         Arrays.sort(point);
-//        System.out.println(point[0] + "," + point[1]);
         java.util.HashSet<Double> l1 = new java.util.HashSet();
         java.util.HashSet<Double> l2 = new java.util.HashSet();
         for (int i = point[0]; i < point[1]; i++) {
@@ -157,7 +155,6 @@ public class CrossOver {
         int[] point = {random.nextInt(p1.size() - 1), random.nextInt(p1.size() - 1)};
         Chromosome[] child = createChilds(p1, p2);
         Arrays.sort(point);
-//        System.out.println(point[0] + "," + point[1]);
         java.util.HashSet<Integer> l1 = new java.util.HashSet();
         java.util.HashSet<Integer> l2 = new java.util.HashSet();
         for (int i = point[0]; i < point[1]; i++) {
@@ -171,7 +168,6 @@ public class CrossOver {
                 }
             }
             child[1].swap(i, j);
-//            System.out.print("swap "+i+" "+j);
             l2.add(i);
             l2.add(j);
 

@@ -3,15 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gsp;
+package testing;
 
+import gsp.GSP;
 import java.io.IOException;
 
 /**
  *
  * @author ANDITYAARIFIANTO
  */
-public class GoalStackPlanning {
+public class TestGSP {
 
     /**
      * @param args the command line arguments

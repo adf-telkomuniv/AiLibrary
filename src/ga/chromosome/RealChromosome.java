@@ -53,7 +53,6 @@ public class RealChromosome extends Chromosome {
     @Override
     public RealChromosome clone() {
         RealChromosome c = new RealChromosome(size());
-//        c.setGen(this.getGen().clone());
         for (int i = 0; i < gen.length; i++) {
             c.setGen(i, gen[i]);
         }

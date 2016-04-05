@@ -11,6 +11,6 @@ package fuzzy;
  */
 public interface OutputModel {
 
-    public double defuzzy(FuzzyValue[] output);
+    public double defuzzy(FuzzyValue[] fuzzyOutput);
 
 }

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package backpro;
+package ann;
 
 import Jama.Matrix;
 import java.util.Random;
@@ -12,11 +12,11 @@ import java.util.Random;
  *
  * @author dee
  */
-public class BPModel2 {
+public class BackProp {
 
     private Matrix[] weight;
     private Matrix[] weightFlexible;
-    private Matrix[] weightFix;
+//    private Matrix[] weightFix;
     private Matrix[] aN;
     private Matrix[] dN;
     private Matrix threshold;
@@ -29,24 +29,24 @@ public class BPModel2 {
     private int numWeight;
     private int numOutput;
 
-    public BPModel2(int[] hiddenLayer) {
+    public BackProp(int[] hiddenLayer) {
         this.hiddenLayer = hiddenLayer;
         lR = 0.1;
         maxEpoch = 500;
         minMAE = 0.00001;
     }
 
-    public BPModel2(int[] hiddenLayer, double lR) {
+    public BackProp(int[] hiddenLayer, double lR) {
         this(hiddenLayer);
         this.setlR(lR);
     }
 
-    public BPModel2(int[] hiddenLayer, int maxEpoch) {
+    public BackProp(int[] hiddenLayer, int maxEpoch) {
         this(hiddenLayer);
         this.setMaxEpoch(maxEpoch);
     }
 
-    public BPModel2(int[] hiddenLayer, double lR, int maxEpoch) {
+    public BackProp(int[] hiddenLayer, double lR, int maxEpoch) {
         this(hiddenLayer);
         this.setMaxEpoch(maxEpoch);
         this.setlR(lR);
@@ -62,6 +62,38 @@ public class BPModel2 {
             Matrix x = new Matrix(1, layer[l + 1]);
             for (int i = 0; i < layer[l + 1]; i++) {
                 Matrix wL = weight[l];
+                Matrix v;
+                v = cp.times(wL.getMatrix(0, wL.getRowDimension() - 1, i, i));
+                x.set(0, i, 1 / (1 + Math.exp(v.get(0, 0))));
+            }
+            cp = x;
+        }
+
+        if (opt == 0) {
+            return cp.getColumnPackedCopy();
+        } else {
+            double[] out = cp.getColumnPackedCopy();
+            for (int i = 0; i < out.length; i++) {
+                if (out[i] >= threshold.get(0, i)) {
+                    out[i] = 1;
+                } else {
+                    out[i] = 0;
+                }
+            }
+            return out;
+        }
+    }
+
+    public double[] testFlexible(double[] input) {
+        return testFlexible(input, 1);
+    }
+
+    public double[] testFlexible(double[] input, int opt) {
+        Matrix cp = new Matrix(input, 1);
+        for (int l = 0; l < numWeight; l++) {
+            Matrix x = new Matrix(1, layer[l + 1]);
+            for (int i = 0; i < layer[l + 1]; i++) {
+                Matrix wL = weightFlexible[l];
                 Matrix v;
                 v = cp.times(wL.getMatrix(0, wL.getRowDimension() - 1, i, i));
                 x.set(0, i, 1 / (1 + Math.exp(v.get(0, 0))));
@@ -127,6 +159,7 @@ public class BPModel2 {
         int epoch = 0;
         double epochTrainMAE = 1000000;
         double totalMAE = 1000000;
+        double flexibleMAE;
         double[] trainMAE = new double[maxEpoch];
         double[] valMAE = new double[maxEpoch];
         Matrix errorData;
@@ -145,13 +178,7 @@ public class BPModel2 {
                     for (int i = 0; i < layer[l + 1]; i++) {
                         Matrix wL = weight[l];
                         Matrix v;
-//                        if (l == 0) {
-//                        System.out.println(wL.getRowDimension()+" "+wL.getColumnDimension()+" "+i);
                         v = cpTrain.times(wL.getMatrix(0, wL.getRowDimension() - 1, i, i));
-//                        } else {
-//                            v = aN[l - 1].times(wL.getMatrix(1, wL.getColumnDimension(), i, i));
-//                        }
-
                         aN[l].set(0, i, 1 / (1 + Math.exp(-v.get(0, 0))));
                     }
                     cpTrain = aN[l];
@@ -164,7 +191,6 @@ public class BPModel2 {
 
                 //backward computation
                 for (int l = numWeight; l > 0; l--) {
-//                    System.out.println("l = " + l + " : " + layer[l] + " " + layer[l - 1]);
                     if (l == numWeight) {
                         for (int k = 0; k < layer[l]; k++) {
                             double d = aN[l - 1].get(0, k);
@@ -179,7 +205,6 @@ public class BPModel2 {
 
                             Matrix x = aN[l - 1].times(ones.transpose());
                             x = x.times(dN[l]);
-//                            System.out.println(x.getColumnDimension() + " " + x.getRowDimension());
                             Matrix y = weight[l].getMatrix(k, k, 0,
                                     weight[l].getColumnDimension() - 1);
                             x = x.times(y.transpose());
@@ -192,12 +217,8 @@ public class BPModel2 {
                         for (int j = 0; j < layer[l]; j++) {
                             double d;
                             if (l > 1) {
-//                                System.out.println("n");
-//                                System.out.println(dN[l - 1].get(0, j));
                                 d = lR * dN[l - 1].get(0, j) * aN[l - 2].get(0, i);
                             } else {
-//                                System.out.println("m");
-//                                System.out.println(cpTrain.get(0, i));
                                 d = lR * dN[l - 1].get(0, j) * cpTrain.get(0, i);
                             }
                             dW.set(i, j, d);
@@ -234,8 +255,9 @@ public class BPModel2 {
             double newMAE = (trainMAE[epoch] * input.length + valMAE[epoch] * inputVal.length)
                     / (input.length + inputVal.length);
             if (newMAE < totalMAE) {
-                totalMAE = newMAE;
+                flexibleMAE = newMAE;
                 weightFlexible = weight.clone();
+                System.out.println("Flexible MAE = " + flexibleMAE);
             }
 
             totalMAE = trainMAE[epoch];
@@ -274,7 +296,6 @@ public class BPModel2 {
             for (int i = 0; i < layer[l]; i++) {
                 for (int j = 0; j < layer[l + 1]; j++) {
                     weight[l].set(i, j, (r.nextDouble() * 2 - 1) / 10);
-//                    weight[l].set(i, j, r.nextDouble());
                 }
             }
         }
@@ -284,7 +305,7 @@ public class BPModel2 {
         return maxEpoch;
     }
 
-    public void setMaxEpoch(int maxEpoch) {
+    public final void setMaxEpoch(int maxEpoch) {
         this.maxEpoch = maxEpoch;
     }
 
@@ -292,7 +313,7 @@ public class BPModel2 {
         return lR;
     }
 
-    public void setlR(double lR) {
+    public final void setlR(double lR) {
         this.lR = lR;
     }
 

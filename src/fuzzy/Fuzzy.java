@@ -6,7 +6,6 @@
 package fuzzy;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  *
@@ -90,29 +89,25 @@ public class Fuzzy {
         return fuzzyOutput;
     }
 
-    public FuzzyValue[] inference(FuzzyValue[][] fuzzyOutput, Rules rules) {
-        ArrayList<FuzzyValue> out = new ArrayList();
-        fuzzyOutput = generate(fuzzyOutput);
-        for (int i = 0; i < fuzzyOutput.length; i++) {
-            FuzzyValue o = rules.checkRule(fuzzyOutput[i]);
-//            System.out.println("o = " + o);
-//            if(o==null){
-//                continue;
-//            }
+    public FuzzyValue[] inference(FuzzyValue[][] fuzzyInput, Rules rules) {
+        ArrayList<FuzzyValue> fuzzyOutput = new ArrayList();
+        fuzzyInput = generate(fuzzyInput);
+        for (FuzzyValue[] input : fuzzyInput) {
+            FuzzyValue fuzzyInference = rules.checkRule(input);
             boolean found = false;
-            for (int j = 0; j < out.size(); j++) {
-                if (out.get(j).getLinguistic().equals(o.getLinguistic())) {
+            for (FuzzyValue output : fuzzyOutput) {
+                if (output.getLinguistic().equals(fuzzyInference.getLinguistic())) {
                     found = true;
-                    out.get(j).setFuzzyValue(Math.max(out.get(j).getFuzzyValue(), o.getFuzzyValue()));
+                    output.setFuzzyValue(Math.max(output.getFuzzyValue(), fuzzyInference.getFuzzyValue()));
                     break;
                 }
             }
             if (!found) {
-                out.add(o);
+                fuzzyOutput.add(fuzzyInference);
             }
         }
-        out.sort(null);
-        return out.toArray(new FuzzyValue[0]);
+        fuzzyOutput.sort(null);
+        return fuzzyOutput.toArray(new FuzzyValue[0]);
     }
 
     public double defuzzify(FuzzyValue[] fuzzyOutput, OutputModel outputModel) {

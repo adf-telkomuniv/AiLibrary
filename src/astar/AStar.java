@@ -17,9 +17,9 @@ public class AStar {
     private double[] heuristic;
     private int[][] cityMap;
     private double[] cost;
-    private double[] fScore;
-    private List<Integer> openSet;
-    private List<Integer> closeSet;
+    private final double[] fScore;
+    private final List<Integer> openSet;
+    private final List<Integer> closeSet;
 
     public AStar(double[] heuristic, int[][] cityMap, double[] cost) {
         this.heuristic = heuristic;
@@ -49,22 +49,15 @@ public class AStar {
         fScore[start] = heuristic[start];
         boolean found = false;
         boolean loop = true;
-        int loops = 0;
+//        int loops = 0;
         int current;
         while (openSet.size() > 0) {
-//            System.out.println("open = "+openSet);
-//            System.out.println("close = "+closeSet);
             List<Double> openScore = new ArrayList();
-            for (Integer open : openSet) {
-                openScore.add(fScore[open]);
-            }
+            openSet.forEach((open) -> openScore.add(fScore[open]));
             List<Double> closeScore = new ArrayList();
-            for (Integer close : closeSet) {
-                closeScore.add(fScore[close]);
-            }
-            loops++;
+            closeSet.stream().forEach((close) -> closeScore.add(fScore[close]));
+//            loops++;
             current = getMinimumOpen();
-//            System.out.println("current = " + current);
             if (current == goal) {
                 found = true;
                 loop = false;
@@ -72,17 +65,14 @@ public class AStar {
             }
             openSet.remove(openSet.indexOf(current));
             closeSet.add(current);
-            List<Integer> neighborId = new ArrayList();;
+            List<Integer> neighborId = new ArrayList();
             for (int i = 0; i < cityMap[0].length; i++) {
                 if (cityMap[0][i] == current) {
-//                    neighborId.add(cityMap[1][i]);
                     neighborId.add(i);
-//                    System.out.println("i=" + cityMap[1][i]);
                 }
             }
             for (Integer nId : neighborId) {
                 int neighbor = cityMap[1][nId];
-//                System.out.println("neighbor=" + cityMap[1][nId]);
                 if (closeSet.contains(neighbor)) {
                     double tentativeG2 = gScore[current] + actualCost(current, neighbor);
                     if (tentativeG2 < gScore[neighbor]) {
@@ -124,7 +114,6 @@ public class AStar {
             goal = cameFrom[goal];
             path.add(goal);
         }
-//        path.add(start);
         int[] x = new int[path.size()];
         for (int i = 0; i < x.length; i++) {
             x[i] = path.get(i);
@@ -135,7 +124,7 @@ public class AStar {
     public double getTotalCost(int[] path) {
         double total = 0;
         for (int i = 0; i < path.length - 1; i++) {
-            total += actualCost(path[i+1], path[i]);
+            total += actualCost(path[i + 1], path[i]);
         }
         return total;
     }
@@ -151,16 +140,11 @@ public class AStar {
 
     public int getMinimumOpen() {
         int minId = openSet.get(0);
-        for (int i = 0; i < openSet.size(); i++) {
-//            System.out.println("minId"+minId);
-//            System.out.println("openSet.get(i)"+openSet.get(i));
-//            System.out.println("fScore[minId]"+fScore[minId]);
-//            System.out.println("fScore[openSet.get(i)]"+fScore[openSet.get(i)]);
-            if (fScore[minId] > fScore[openSet.get(i)]) {
-                minId = openSet.get(i);
+        for (Integer open : openSet) {
+            if (fScore[minId] > fScore[open]) {
+                minId = open;
             }
         }
-//        System.out.println("minID="+minId);
         return minId;
     }
 
@@ -176,9 +160,9 @@ public class AStar {
         return cityMap;
     }
 
-    public void setCityMap(int[][] cityMap) {
+    public final void setCityMap(int[][] cityMap) {
         if (cityMap.length != 2) {
-            throw new IllegalStateException("cityMap dimension must be [2][n]");
+            throw new IllegalStateException("cityMap dimension must be [2xn]");
         }
         if (cityMap[0].length != cityMap[1].length) {
             throw new IllegalStateException("cityMap start and destination size must be the same");
@@ -190,11 +174,10 @@ public class AStar {
         return cost;
     }
 
-    public void setCost(double[] cost) {
+    public final void setCost(double[] cost) {
         if (cost.length != cityMap[0].length) {
             throw new IllegalStateException("cost size and cityMap size must be the same");
         }
         this.cost = cost;
     }
-
 }

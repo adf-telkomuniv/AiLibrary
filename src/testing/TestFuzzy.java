@@ -3,15 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fuzzy;
+package testing;
 
+import fuzzy.Fuzzy;
+import fuzzy.FuzzyValue;
+import fuzzy.Input;
+import fuzzy.MamdaniOutput;
+import fuzzy.Membership;
+import fuzzy.Rule;
+import fuzzy.Rules;
+import fuzzy.SugenoOutput;
 import java.util.Arrays;
 
 /**
  *
  * @author dee
  */
-public class Test {
+public class TestFuzzy {
 
 //    public static void mins(int[] inp, int x, int[] inp2) {
 //        if (inp2[x] > 0) {

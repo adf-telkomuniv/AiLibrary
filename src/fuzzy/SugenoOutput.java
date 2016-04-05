@@ -41,18 +41,18 @@ public class SugenoOutput implements OutputModel {
     }
 
     @Override
-    public double defuzzy(FuzzyValue[] output) {
+    public double defuzzy(FuzzyValue[] fuzzyOutput) {
         double result = 0;
-        double dvd = 0;
-        for (int i = 0; i < output.length; i++) {
+        double divider = 0;
+        for (FuzzyValue output : fuzzyOutput) {
             for (int j = 0; j < linguistic.length; j++) {
-                if (output[i].getLinguistic().equals(linguistic[j])) {
-                    result += output[i].getFuzzyValue() * membership[j];
+                if (output.getLinguistic().equals(linguistic[j])) {
+                    result += output.getFuzzyValue() * membership[j];
                 }
             }
-            dvd += output[i].getFuzzyValue();
+            divider += output.getFuzzyValue();
         }
-        return result / dvd;
+        return result / divider;
     }
 
 }

@@ -60,7 +60,6 @@ public class Population {
     }
 
     public void mutatePopulation(int mutationType, double pbMut, int start) {
-//        for (Chromosome c : population) {
         for (int i = start; i < population.size(); i++) {
             Chromosome c = population.get(i);
             switch (mutationType) {
@@ -102,9 +101,7 @@ public class Population {
     }
 
     public void printPop() {
-        for (Chromosome c : population) {
-            System.out.println(c);
-        }
+        population.forEach(System.out::println);
     }
 
     public int getUkPop() {

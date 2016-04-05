@@ -23,7 +23,6 @@ public class PermutationChromosome extends Chromosome {
     @Override
     public Chromosome clone() {
         PermutationChromosome c = new PermutationChromosome(size());
-//        c.setGen(this.getGen().clone());
         for (int i = 0; i < gen.length; i++) {
             c.setGen(i, gen[i]);            
         }
