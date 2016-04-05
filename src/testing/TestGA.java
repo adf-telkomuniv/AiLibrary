@@ -27,8 +27,6 @@ public class TestGA {
             System.out.println(ga.getBestFitness());
             System.out.println(ga.getBestIndv());
             System.out.println(ev.evaluate2(ga.getBestIndv()));
-//            System.out.println(ev.evaluateFitness(ga.getBestIndv()));
-//            ev.evaluate2(ga.getBestIndv());
         } catch (Exception e) {
             e.printStackTrace();
         }

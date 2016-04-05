@@ -47,7 +47,7 @@ public class GSP {
                 // jika top stack sudah ada di current, 
                 // hapus top stack 
                 // jika top stack tidak ada di goal, hapus current yg sama
-                System.out.println(" -- remove " + st);
+                System.out.println(" -- remove " + st + " from stack");
                 stack.pop();
             } // 
             // jika top stack adalah operator, 
@@ -216,15 +216,17 @@ public class GSP {
                     }
                 }
             }
+            System.out.println("<Press Enter>");
             next.nextLine();
             if (stack.isEmpty() && !cekResult()) {
                 System.out.println(" -- check again -- ");
+                System.out.println("<Press Enter>");
                 next.nextLine();
                 goal.forEach(g -> stack.add(g));
             }
         }
         boolean result = cekResult();
-        System.out.println("ketemu : " + result);
+        System.out.println("result found : " + result);
         System.out.println(queue);
 
         // backward chain to find optimum solution

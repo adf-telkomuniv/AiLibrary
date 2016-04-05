@@ -1,0 +1,8 @@
+on(b,a)
+ontable(a)
+ontable(c)
+ontable(d)
+clear(b)
+clear(c)
+clear(d)
+armempty
