@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package newpackage;
+package testing;
 
 import ga.GeneticAlgorithm;
 import ga.OperatorOptions;
@@ -14,9 +14,9 @@ import ga.Settings;
  * @author dee
  */
 public class TestGA {
-    
+
     public static void main(String[] args) {
-        
+
         try {
             Settings settings = new Settings(31, 1000, 300);
             OperatorOptions operations = new OperatorOptions(3, 6, 6, 0, 1);
