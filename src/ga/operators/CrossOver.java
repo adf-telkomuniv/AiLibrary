@@ -48,6 +48,7 @@ public class CrossOver {
         return child;
     }
 
+    // 0
     public static Chromosome[] singlePoint(Chromosome p1, Chromosome p2) {
         Random random = new Random();
         int point = random.nextInt(p1.size() - 1);
@@ -59,6 +60,7 @@ public class CrossOver {
         return child;
     }
 
+    //1
     public static Chromosome[] nPoint(Chromosome p1, Chromosome p2, int n) {
         Random random = new Random();
         int[] point = new int[n];
@@ -82,10 +84,12 @@ public class CrossOver {
         return child;
     }
 
+    // 2
     public static Chromosome[] uniform(Chromosome p1, Chromosome p2, Chromosome pattern) {
         return null;
     }
 
+    // 3
     public static Chromosome[] singleArithmetic(Chromosome p1, Chromosome p2) {
         Chromosome[] child = createChilds(p1, p2);
         Random random = new Random();
@@ -96,6 +100,7 @@ public class CrossOver {
         return child;
     }
 
+    // 4
     public static Chromosome[] simpleArighmetic(Chromosome p1, Chromosome p2) {
         Chromosome[] child = createChilds(p1, p2);
         Random random = new Random();
@@ -108,6 +113,7 @@ public class CrossOver {
         return child;
     }
 
+    // 5
     public static Chromosome[] wholeArithmetic(Chromosome p1, Chromosome p2) {
         Chromosome[] child = createChilds(p1, p2);
         Random random = new Random();

@@ -21,16 +21,16 @@ import javax.swing.border.EtchedBorder;
  *
  * @author dee
  */
-public class SimLinearClassifier extends javax.swing.JFrame {
+public class AiLcGui extends javax.swing.JFrame {
 
     /**
-     * Creates new form SimLinearClassifier
+     * Creates new form AiLcGui
      */
     final VisualComponents comp;
     private LinearClassifier model;
     HashMap<String, Component> cp;
 
-    public SimLinearClassifier() {
+    public AiLcGui() {
         initComponents();
         model = new LinearClassifier();
         comp = new VisualComponents();

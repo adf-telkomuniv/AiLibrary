@@ -101,7 +101,7 @@ public final class OperatorOptions {
             throw new Exception("wrong crossover type option");
         } else if (chromosomeType < 2 && crossoverType > 2) {
             throw new Exception("wrong crossover type option");
-        } else if (chromosomeType < 3 && crossoverType > 6) {
+        } else if (chromosomeType < 3 && crossoverType > 5) {
             throw new Exception("wrong crossover type option");
         } else if (chromosomeType == 3 && crossoverType < 6) {
             throw new Exception("wrong crossover type option");

@@ -16,14 +16,14 @@ import java.util.Random;
  */
 public class GeneticAlgorithm {
 
-    private Settings settings;
+    private GaSettings settings;
     private OperatorOptions operator;
     private Population population;
     private double bestFitness;
     private Chromosome bestIndv;
     private double maxFGen[];
 
-    public GeneticAlgorithm(Settings settings, OperatorOptions operator) {
+    public GeneticAlgorithm(GaSettings settings, OperatorOptions operator) {
         this.settings = settings;
         this.operator = operator;
         this.population = new Population();
@@ -90,6 +90,11 @@ public class GeneticAlgorithm {
              * mutation
              */
             pool.mutatePopulation(operator.getMutationType(), settings.getPbMut(), start);
+            
+            
+            /**
+             * survivor selection
+             */
             if (operator.getSurvivorSelection() < 2) {
                 population = pool;
             } else {
@@ -104,11 +109,11 @@ public class GeneticAlgorithm {
         }
     }
 
-    public Settings getSettings() {
+    public GaSettings getSettings() {
         return settings;
     }
 
-    public void setSettings(Settings settings) {
+    public void setSettings(GaSettings settings) {
         this.settings = settings;
     }
 

@@ -34,7 +34,7 @@ public class Population {
         population.add(c);
     }
 
-    public void initializePopulation(int chromosomeType, Settings settings) {
+    public void initializePopulation(int chromosomeType, GaSettings settings) {
         switch (chromosomeType) {
             case 0:
                 for (int i = 0; i < settings.getPopSize(); i++) {

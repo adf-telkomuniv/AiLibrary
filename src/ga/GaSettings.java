@@ -6,11 +6,11 @@
 package ga;
 
 /**
- * Settings for Genetic Algorithm Optimization
+ * GaSettings for Genetic Algorithm Optimization
  *
  * @author dee
  */
-public class Settings {
+public class GaSettings {
 
     private int nGen;                   // number of Gen in a Chromosome
     private int popSize;                // number of Chromosome in a Generation (Population Size)
@@ -21,7 +21,7 @@ public class Settings {
     private int minValue;               // minimum Value in each gen in a Chromosome
     private int maxValue;               // maximum Value in each gen in a Chromosome
 
-    public Settings(int nGen, int popSize) {
+    public GaSettings(int nGen, int popSize) {
         this.nGen = nGen;
         this.popSize = popSize;
         maxG = 100;
@@ -30,54 +30,54 @@ public class Settings {
         thresholdFitness = 0.1;
     }
 
-    public Settings(int nGen, int popSize, int maxG) {
+    public GaSettings(int nGen, int popSize, int maxG) {
         this(nGen, popSize);
         this.maxG = maxG;
     }
 
-    public Settings(int nGen, int popSize, double pbRec) {
+    public GaSettings(int nGen, int popSize, double pbRec) {
         this(nGen, popSize);
         this.pbRec = pbRec;
     }
 
-    public Settings(int nGen, int popSize, double pbRec, double pbMut) {
+    public GaSettings(int nGen, int popSize, double pbRec, double pbMut) {
         this(nGen, popSize);
         this.pbRec = pbRec;
         this.pbMut = pbMut;
     }
 
-    public Settings(int nGen, int popSize, int maxG, double pbRec) {
+    public GaSettings(int nGen, int popSize, int maxG, double pbRec) {
         this(nGen, popSize, maxG);
         this.pbRec = pbRec;
     }
 
-    public Settings(int nGen, int popSize, int maxG, double pbRec, double pbMut) {
+    public GaSettings(int nGen, int popSize, int maxG, double pbRec, double pbMut) {
         this(nGen, popSize, maxG);
         this.pbRec = pbRec;
         this.pbMut = pbMut;
     }
 
-    public Settings(int nGen, int popSize, int maxG, int maxValue) {
+    public GaSettings(int nGen, int popSize, int maxG, int maxValue) {
         this(nGen, popSize, maxG);
         this.maxValue = maxValue;
     }
 
-    public Settings(int nGen, int popSize, int maxG, int minValue, int maxValue) {
+    public GaSettings(int nGen, int popSize, int maxG, int minValue, int maxValue) {
         this(nGen, popSize, maxG, maxValue);
         this.minValue = minValue;
     }
 
-    public Settings(int nGen, int popSize, int maxG, int minValue, int maxValue, double pbRec) {
+    public GaSettings(int nGen, int popSize, int maxG, int minValue, int maxValue, double pbRec) {
         this(nGen, popSize, maxG, minValue, maxValue);
         this.pbRec = pbRec;
     }
 
-    public Settings(int nGen, int popSize, int maxG, int minValue, int maxValue, double pbRec, double pbMut) {
+    public GaSettings(int nGen, int popSize, int maxG, int minValue, int maxValue, double pbRec, double pbMut) {
         this(nGen, popSize, maxG, minValue, maxValue, pbRec);
         this.pbMut = pbMut;
     }
 
-    public Settings(int nGen, int popSize, int maxG, int minValue, int maxValue, double pbRec, double pbMut, double maxF) {
+    public GaSettings(int nGen, int popSize, int maxG, int minValue, int maxValue, double pbRec, double pbMut, double maxF) {
         this(nGen, popSize, maxG, minValue, maxValue, pbRec, pbMut);
         this.thresholdFitness = maxF;
     }
