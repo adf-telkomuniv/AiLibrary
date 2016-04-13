@@ -99,7 +99,7 @@ public class SimLinearClassifier extends javax.swing.JFrame {
             for (int j = 0; j < 9; j++) {
                 String s = "x" + i + j;
                 JSpinner c = (JSpinner) cp.get(s);
-                model.setData(i, j, (double) c.getValue());
+                model.setData(j, i, (double) c.getValue());
             }
         }
     }
@@ -1079,13 +1079,6 @@ public class SimLinearClassifier extends javax.swing.JFrame {
         visualize();
     }//GEN-LAST:event_btnRandomActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        SimLinearClassifier v = new SimLinearClassifier();
-        v.setVisible(true);
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JSpinner b0;
@@ -1197,6 +1190,7 @@ public class SimLinearClassifier extends javax.swing.JFrame {
     private javax.swing.JTextField y7;
     private javax.swing.JTextField y8;
     // End of variables declaration//GEN-END:variables
+
     public void init() {
         x00.setName("x00");
         x01.setName("x01");
