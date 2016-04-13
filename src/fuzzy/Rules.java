@@ -29,7 +29,7 @@ public class Rules {
             max *= inp[i];
         }
         int ps = Math.round(max / output.length);
-        int numOut = 0;
+        int numOut = output.length - 1;
         int countOut = 0;
         for (int i = 0; i < inp.length; i++) {
             inp[i]--;
@@ -46,11 +46,12 @@ public class Rules {
             countOut++;
             if (countOut >= ps) {
                 countOut = 0;
-                numOut++;
+                if (numOut > 0) {
+                    numOut--;
+                }
             }
         }
-        rules.sort(null);
-
+//        rules.sort(null);
     }
 
     public void mins(int[] inp, int x, int[] inp2) {
@@ -114,7 +115,7 @@ public class Rules {
 
     @Override
     public String toString() {
-        rules.sort(null);
+//        rules.sort(null);
         String s = "";
         int i = 0;
         for (Rule rule : rules) {

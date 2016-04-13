@@ -18,17 +18,21 @@ public class Membership {
     private int lineType[];
 
     public Membership(String linguistic, double[] position) {
-        if (position.length != 4) {
+        if (position.length != 4 && position.length != 3) {
             throw new IllegalStateException("wrong array position length");
         }
         Arrays.sort(position);
         lineType = new int[]{0, 0};
         this.linguistic = linguistic;
-        this.position = position.clone();
+        if (position.length == 3) {
+            this.position = new double[]{position[0], position[1], position[1], position[2]};
+        } else {
+            this.position = position.clone();
+        }
     }
 
     public Membership(String linguistic, double[] position, int[] lineType) {
-        if (position.length != 4) {
+        if (position.length != 4 && position.length != 3) {
             throw new IllegalStateException("wrong array position length");
         }
         if (lineType.length != 2) {
@@ -43,7 +47,11 @@ public class Membership {
         }
 
         this.linguistic = linguistic;
-        this.position = position.clone();
+        if (position.length == 3) {
+            this.position = new double[]{position[0], position[1], position[1], position[2]};
+        } else {
+            this.position = position.clone();
+        }
     }
 
     public double fuzzify(double input) {

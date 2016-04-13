@@ -16,17 +16,21 @@ public class MamdaniOutput extends Input implements OutputModel {
 
     private final int numPoint;
 
-    public MamdaniOutput(int numLinguistic, int numPoint) {
-        super(numLinguistic);
+//    public MamdaniOutput(int numLinguistic, int numPoint) {
+////        super(numLinguistic);
+//        this.numPoint = numPoint;
+//    }
+    public MamdaniOutput(int numPoint) {
+        super();
         this.numPoint = numPoint;
     }
 
     @Override
     public double defuzzy(FuzzyValue[] fuzzyOutput) {
         Map<Integer, Double> outputMap = new HashMap();
-        for (int i = 0; i < membership.length; i++) {
+        for (int i = 0; i < membership.size(); i++) {
             for (FuzzyValue output : fuzzyOutput) {
-                if (membership[i].getLinguistic().equals(output.getLinguistic())) {
+                if (membership.get(i).getLinguistic().equals(output.getLinguistic())) {
                     outputMap.put(i, output.getFuzzyValue());
                     break;
                 }
@@ -34,11 +38,11 @@ public class MamdaniOutput extends Input implements OutputModel {
         }
 
         Integer[] outputLinguistic = outputMap.keySet().toArray(new Integer[0]);
-        double min = membership[outputLinguistic[0]].getPosition()[1];
-        double max = membership[outputLinguistic[outputLinguistic.length - 1]].getPosition()[2];
-        for (Integer linguistic : outputLinguistic) {
-            min = Math.min(min, membership[linguistic].getPosition()[1]);
-            max = Math.max(max, membership[linguistic].getPosition()[2]);
+        double min = membership.get(outputLinguistic[0]).getPosition()[1];
+        double max = membership.get(outputLinguistic[outputLinguistic.length - 1]).getPosition()[2];
+        for (Integer nLinguistic : outputLinguistic) {
+            min = Math.min(min, membership.get(nLinguistic).getPosition()[1]);
+            max = Math.max(max, membership.get(nLinguistic).getPosition()[2]);
         }
         double step = (max - min) / numPoint;
         double divider = 0;
@@ -49,9 +53,9 @@ public class MamdaniOutput extends Input implements OutputModel {
         double pos = min;
 
         for (int i = 0; i < numPoint; i++) {
-            for (Integer linguistic : outputLinguistic) {
-                if (membership[linguistic].isInside(pos)) {
-                    result += pos * outputMap.get(linguistic);
+            for (Integer nLinguistic : outputLinguistic) {
+                if (membership.get(nLinguistic).isInside(pos)) {
+                    result += pos * outputMap.get(nLinguistic);
                     break;
                 }
             }

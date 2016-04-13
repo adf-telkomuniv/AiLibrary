@@ -6,6 +6,7 @@
 package fuzzy;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -13,18 +14,48 @@ import java.util.ArrayList;
  */
 public class Input {
 
-    protected Membership[] membership;
+//    protected Membership[] membership;
+    protected List<Membership> membership;
 
-    public Input(int numLinguistic) {
-        membership = new Membership[numLinguistic];
+//    public Input(int numLinguistic) {
+//        membership = new Membership[numLinguistic];
+//    }
+    public Input() {
+        membership = new ArrayList();
+    }
+
+    public void addMembership(Membership m) {
+        membership.add(m);
+    }
+
+    public void addMembership(String linguistic, double[] point) {
+        membership.add(new Membership(linguistic, point));
+    }
+
+    public void addMembership(String linguistic, double a, double b, double c) {
+        membership.add(new Membership(linguistic, new double[]{a, b, c}));
+    }
+
+    public void addMembership(String linguistic, double a, double b, double c, double d) {
+        membership.add(new Membership(linguistic, new double[]{a, b, c, d}));
+    }
+
+    public void addMembership(String linguistic, double[] point, int[] lineType) {
+        membership.add(new Membership(linguistic, point, lineType));
     }
 
     public void setMembership(int numLinguistic, Membership m) {
-        membership[numLinguistic] = m;
+//        membership[numLinguistic] = m;
+        if (numLinguistic >= membership.size()) {
+            membership.add(m);
+        } else {
+            membership.set(numLinguistic, m);
+        }
     }
 
     public Membership getMembership(int i) {
-        return membership[i];
+//        return membership[i];
+        return membership.get(i);
     }
 
     public FuzzyValue[] fuzzify(double a) {
