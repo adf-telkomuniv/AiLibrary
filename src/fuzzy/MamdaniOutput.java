@@ -38,6 +38,9 @@ public class MamdaniOutput extends Input implements OutputModel {
         }
 
         Integer[] outputLinguistic = outputMap.keySet().toArray(new Integer[0]);
+        if(outputLinguistic.length==0){
+            return 0;
+        }
         double min = membership.get(outputLinguistic[0]).getPosition()[1];
         double max = membership.get(outputLinguistic[outputLinguistic.length - 1]).getPosition()[2];
         for (Integer nLinguistic : outputLinguistic) {

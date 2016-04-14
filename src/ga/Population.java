@@ -34,6 +34,10 @@ public class Population {
         population.add(c);
     }
 
+    public void setChromosome(int i, Chromosome c) {
+        population.set(i, c);
+    }
+
     public void initializePopulation(int chromosomeType, GaSettings settings) {
         switch (chromosomeType) {
             case 0:

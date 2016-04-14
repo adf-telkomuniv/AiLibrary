@@ -42,6 +42,7 @@ public class GeneticAlgorithm {
              * fitness evaluation
              */
             bestIndv = population.getChromosome(0);
+            System.out.println(bestIndv);
             bestFitness = evaluator.evaluateFitness(bestIndv);
             fitnessList[0] = bestFitness;
             for (int i = 1; i < settings.getPopSize(); i++) {
@@ -106,6 +107,7 @@ public class GeneticAlgorithm {
                 break;
             }
             System.out.println("best = " + bestFitness + " - " + bestIndv);
+            population.setChromosome(0, bestIndv);
         }
     }
 

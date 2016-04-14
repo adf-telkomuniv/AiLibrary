@@ -117,11 +117,11 @@ public final class OperatorOptions {
         if (mutationType > 9 || crossoverType < 0) {
             throw new Exception("wrong mutation type option");
         } else if (chromosomeType == 0 && mutationType != 0) {
-            throw new Exception("wrong mutation type option");
+            throw new Exception("wrong binary mutation type option");
         } else if (chromosomeType == 1 && (mutationType < 1 || mutationType > 3)) {
-            throw new Exception("wrong mutation type option");
+            throw new Exception("wrong integer mutation type option");
         } else if (chromosomeType == 2 && (mutationType < 2 || mutationType > 5)) {
-            throw new Exception("wrong mutation type option");
+            throw new Exception("wrong real mutation type option");
         } else if (chromosomeType == 3 && mutationType < 6) {
             throw new Exception("wrong mutation type option");
         }

@@ -506,7 +506,7 @@ public class AiGaGui extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(ev_pnl, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(st_pnl, javax.swing.GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE)))
+                        .addComponent(st_pnl, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(fit_pnl, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -605,6 +605,7 @@ public class AiGaGui extends javax.swing.JFrame {
 
     public int getChromosomeType() {
         String s = getSelected(chromosomeType);
+        System.out.println("s = "+s);
         switch (s) {
             case "Binary":
                 return 0;
@@ -615,7 +616,7 @@ public class AiGaGui extends javax.swing.JFrame {
             case "Permutation":
                 return 3;
             default:
-                return 0;
+                throw new AssertionError();
         }
     }
 
@@ -635,7 +636,7 @@ public class AiGaGui extends javax.swing.JFrame {
             case "Tournament Selection":
                 return 5;
             default:
-                return 0;
+                throw new AssertionError();
         }
     }
 
@@ -647,12 +648,13 @@ public class AiGaGui extends javax.swing.JFrame {
             case "Steady State":
                 return 1;
             default:
-                return 0;
+                throw new AssertionError();
         }
     }
 
     public int getCrossOverType() {
         String selected = (String) crossoverType.getSelectedItem();
+        System.out.println(selected);
         switch (selected) {
             case "Single Point":
                 return 0;
@@ -664,7 +666,7 @@ public class AiGaGui extends javax.swing.JFrame {
                 return 3;
             case "Simple ArithMetic":
                 return 4;
-            case " Whole ArithMetic":
+            case "Whole ArithMetic":
                 return 5;
             case "Order":
                 return 6;
@@ -682,6 +684,7 @@ public class AiGaGui extends javax.swing.JFrame {
     public int getMutationType() {
 //        return mutationType.getSelectedIndex();
         String selected = (String) mutationType.getSelectedItem();
+        System.out.println(selected);
         switch (selected) {
             case "Binary":
                 return 0;
@@ -879,7 +882,7 @@ public class AiGaGui extends javax.swing.JFrame {
         }
 
         private void binarySelected() {
-            String[] model = {"Singe Point", "n Point", "Uniform"};
+            String[] model = {"Single Point", "n Point", "Uniform"};
             setCrossOverType(model);
 
             model = new String[]{"Binary"};
@@ -888,7 +891,7 @@ public class AiGaGui extends javax.swing.JFrame {
         }
 
         private void integerSelected() {
-            String[] model = {"Singe Point", "n Point", "Uniform"};
+            String[] model = {"Single Point", "n Point", "Uniform"};
             setCrossOverType(model);
 
             model = new String[]{"Turn Over", "Random", "Creep"};
@@ -897,8 +900,8 @@ public class AiGaGui extends javax.swing.JFrame {
         }
 
         private void realSelected() {
-            String[] model = {"Singe Point", "n Point", "Uniform",
-                "Single Arithmetic", "Simple ArithMetic", " Whole ArithMetic"
+            String[] model = {"Single Point", "n Point", "Uniform",
+                "Single Arithmetic", "Simple ArithMetic", "Whole ArithMetic"
             };
             setCrossOverType(model);
 
