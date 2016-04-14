@@ -63,10 +63,10 @@ public class GeneticAlgorithm {
             int start = 0;
             if (operator.getSurvivorSelection() == 1) {
                 start = 1;
-                pool.addChromosome(bestIndv);
+                pool.addChromosome(bestIndv.clone());
                 if (settings.getPopSize() % 2 == 0) {
                     start = 2;
-                    pool.addChromosome(bestIndv);
+                    pool.addChromosome(bestIndv.clone());
                 }
             }
             
