@@ -20,7 +20,7 @@ public class TestGaGui {
         try {
 //            GaSettings settings = new GaSettings(24, 100, 300, 10, 90);
 //            OperatorOptions operations = new OperatorOptions(1, 1, 1);
-            GaSettings settings = new GaSettings(24, 100, 300);
+            GaSettings settings = new GaSettings(24, 300, 300);
             OperatorOptions operations = new OperatorOptions(2, 3, 4);
             GeneticAlgorithm ga = new GeneticAlgorithm(settings, operations);
             settings.setThresholdFitness(1000);
