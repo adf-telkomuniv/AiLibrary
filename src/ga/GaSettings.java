@@ -26,7 +26,7 @@ public class GaSettings {
         this.popSize = popSize;
         maxG = 100;
         pbRec = 0.8;
-        pbMut = 0.01;
+        pbMut = 0.1;
         thresholdFitness = 0.1;
     }
 

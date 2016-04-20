@@ -60,9 +60,9 @@ public class Rule implements Comparable<Rule> {
     public String toString() {
         String s = "if " + inputLing.get(0);
         for (int i = 1; i < inputLing.size(); i++) {
-            s = s + " and " + inputLing.get(i);
+            s = s + "  and  " + inputLing.get(i);
         }
-        s = s + " then " + outputLing;
+        s = s + "  then  " + outputLing;
         return s;
     }
 

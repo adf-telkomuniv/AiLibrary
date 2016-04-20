@@ -22,7 +22,7 @@ public final class OperatorOptions {
 
     public OperatorOptions() throws Exception {
         parentSelection = 0;
-        survivorSelection = 0;
+        survivorSelection = 1;
         chromosomeType = 0;
         crossoverType = 0;
         mutationType = 0;

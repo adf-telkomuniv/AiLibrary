@@ -20,6 +20,7 @@ public class Rules {
     }
 
     public void generate(String[][] input, String[] output) {
+//        int numCl = output.length;
         int[] inp = new int[input.length];
         for (int i = 0; i < inp.length; i++) {
             inp[i] = input[i].length;
@@ -28,32 +29,70 @@ public class Rules {
         for (int i = 0; i < inp.length; i++) {
             max *= inp[i];
         }
-        int ps = Math.round(max / output.length);
-        int numOut = output.length - 1;
-        int countOut = 0;
+//        int ps = Math.round(max / output.length);
+//        int numOut = output.length - 1;
+//        int countOut = 0;
         for (int i = 0; i < inp.length; i++) {
             inp[i]--;
         }
         int[] inp2 = inp.clone();
         for (int i = 0; i < max; i++) {
+            double dv = 0;
             String s[] = new String[inp2.length];
             for (int j = 0; j < inp2.length; j++) {
                 s[j] = input[j][inp2[j]];
+                dv += (inp2[j] + 1 + (input.length / output.length)) * input[j].length / output.length;
             }
             mins(inp, 0, inp2);
-            Rule r = new Rule(s, output[numOut]);
+            int dvi = (int) Math.round(dv / input.length);
+            dvi = (dvi > output.length  ? output.length  : dvi);
+            Rule r = new Rule(s, output[dvi - 1]);
             rules.add(r);
-            countOut++;
-            if (countOut >= ps) {
-                countOut = 0;
-                if (numOut > 0) {
-                    numOut--;
-                }
-            }
+//            countOut++;
+//            if (countOut >= ps) {
+//                countOut = 0;
+//                if (numOut > 0) {
+//                    numOut--;
+//                }
+//            }
         }
 //        rules.sort(null);
     }
 
+//    public void generate(String[][] input) {
+//        int[] inp = new int[input.length];
+//        for (int i = 0; i < inp.length; i++) {
+//            inp[i] = input[i].length;
+//        }
+//        int max = 1;
+//        for (int i = 0; i < inp.length; i++) {
+//            max *= inp[i];
+//        }
+//        int countOut = 0;
+//        for (int i = 0; i < inp.length; i++) {
+//            inp[i]--;
+//        }
+//        int[] inp2 = inp.clone();
+//        for (int i = 0; i < max; i++) {
+//            String s[] = new String[inp2.length];
+//            for (int j = 0; j < inp2.length; j++) {
+//                s[j] = input[j][inp2[j]];
+//            }
+//            mins(inp, 0, inp2);
+//            Rule r = new Rule(s, "");
+//            rules.add(r);
+//        }
+////        rules.sort(null);
+//    }
+//    public void setOutputs(String[] output){
+//        if (output.length != rules.size()) {
+//            throw new IllegalStateException("number of rules and outputs must be the same");
+//        }
+//        for (int i = 0; i < rules.size(); i++) {
+//            Rule r = rules.get(i);
+//            r.setOutputLing(output[i]);            
+//        }
+//    }
     public void mins(int[] inp, int x, int[] inp2) {
         if (inp2[x] > 0) {
             inp2[x]--;

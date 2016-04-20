@@ -42,13 +42,12 @@ public class GeneticAlgorithm {
              * fitness evaluation
              */
             bestIndv = population.getChromosome(0);
-            System.out.println(bestIndv);
             bestFitness = evaluator.evaluateFitness(bestIndv);
             fitnessList[0] = bestFitness;
             for (int i = 1; i < settings.getPopSize(); i++) {
                 indv = population.getChromosome(i);
                 fitness = evaluator.evaluateFitness(indv);
-                fitnessList[0] = fitness;
+                fitnessList[i] = fitness;
                 if (fitness > bestFitness) {
                     bestFitness = fitness;
                     bestIndv = indv.clone();
@@ -69,7 +68,6 @@ public class GeneticAlgorithm {
                     pool.addChromosome(bestIndv.clone());
                 }
             }
-            
 
             /**
              * parent selection and recombination
@@ -91,8 +89,7 @@ public class GeneticAlgorithm {
              * mutation
              */
             pool.mutatePopulation(operator.getMutationType(), settings.getPbMut(), start);
-            
-            
+
             /**
              * survivor selection
              */
@@ -107,6 +104,8 @@ public class GeneticAlgorithm {
                 break;
             }
             System.out.println("best = " + bestFitness + " - " + bestIndv);
+            System.out.println("acc = " + (bestFitness / 258 * 100));
+
             population.setChromosome(0, bestIndv);
         }
     }
