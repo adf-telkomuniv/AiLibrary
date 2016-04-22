@@ -172,7 +172,7 @@ public class Vol {
     }
 
     double[] getW() {
-        return w;
+        return w.clone();
     }
 
     public void setW(double[] w) {
@@ -180,7 +180,7 @@ public class Vol {
     }
 
     public double[] getDw() {
-        return dw;
+        return dw.clone();
     }
 
     public void setDw(double[] dw) {

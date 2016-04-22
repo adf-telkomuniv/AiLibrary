@@ -29,7 +29,8 @@ public class Options {
         for (String field : field_name) {
             Object f = opt.get(field);
             if (f != null) {
-                ret = f;
+//                ret = f;
+                return f;
             }
         }
         return ret;
@@ -42,6 +43,16 @@ public class Options {
 
     public Object get(String field) {
         return opt.get(field);
+    }
+
+    public Object get(String[] fields) {
+        for (String field : fields) {
+            Object f = opt.get(field);
+            if (f != null) {
+                return f;
+            }
+        }
+        return null;
     }
 
 //    public static Object getOpt(Map<String, Object> opt, String field) {

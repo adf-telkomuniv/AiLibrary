@@ -6,15 +6,13 @@
 package cnn;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
  * @author dee
  */
-public class ConvLayer extends LayerInput {
+public class ConvLayer extends LayerDotProducts {
 
     private int in_depth;
     private int in_sx;
@@ -23,11 +21,6 @@ public class ConvLayer extends LayerInput {
     private int sy;
     private int stride;
     private int pad;
-    private double l1_decay_mul;
-    private double l2_decay_mul;
-    private double bias;
-    private Vol[] filters;
-    private Vol biases;
 
     public ConvLayer(Vol vol, Options opt) {
         super(vol, opt);
@@ -40,17 +33,14 @@ public class ConvLayer extends LayerInput {
         sy = (int) opt.getOpt("sy", sx);
         stride = (int) opt.getOpt("stride", 1);
         pad = (int) opt.getOpt("pad", 0);
-        l1_decay_mul = (double) opt.getOpt("l1_decay_mul", 0);
-        l2_decay_mul = (double) opt.getOpt("l2_decay_mul", 1);
+
         setOut_sx(Math.floorDiv(in_sx + pad * 2 - sx, stride) + 1);
         setOut_sy(Math.floorDiv(in_sy + pad * 2 - sy, stride) + 1);
         setLayer_type("conv");
-        bias = (double) opt.getOpt("bias_pref", 0);
-        filters = new Vol[getOut_depth()];
+        setFilters(new Vol[getOut_depth()]);
         for (int i = 0; i < getOut_depth(); i++) {
-            filters[i] = new Vol(sx, sy, in_depth, 0);
+            setFilters(i, new Vol(sx, sy, in_depth, 0));
         }
-        biases = new Vol(1, 1, getOut_depth(), bias);
     }
 
 //    public ConvLayer(Vol vol, int out_sx, int out_sy, int out_depth, int in_depth,
@@ -85,7 +75,7 @@ public class ConvLayer extends LayerInput {
         int V_sy = V.getSy();
 
         for (int d = 0; d < getOut_depth(); d++) {
-            Vol f = filters[d];
+            Vol f = getFilters(d);
             int x = -pad;
             int y = -pad;
             for (int ay = 0; y < getOut_depth(); y += stride, ay++) {
@@ -105,7 +95,7 @@ public class ConvLayer extends LayerInput {
                             }
                         }
                     }
-                    a += biases.getW(d);
+                    a += getBiases().getW(d);
                     A.set(ax, ay, d, a);
                 }
             }
@@ -114,6 +104,7 @@ public class ConvLayer extends LayerInput {
         return A;
     }
 
+    @Override
     public void backward() {
         Vol V = getIn_act();
         V.setDw(new double[V.getW().length]);
@@ -122,7 +113,7 @@ public class ConvLayer extends LayerInput {
         int V_sy = V.getSy();
 
         for (int d = 0; d < getOut_depth(); d++) {
-            Vol f = filters[d];
+            Vol f = getFilters(d);
             int x = -pad;
             int y = -pad;
             for (int ay = 0; ay < getOut_sy(); y += stride, ay++) {
@@ -143,7 +134,7 @@ public class ConvLayer extends LayerInput {
                             }
                         }
                     }
-                    biases.setDw(d, chain_grad);
+                    getBiases().setDw(d, chain_grad);
                 }
             }
         }
@@ -154,10 +145,10 @@ public class ConvLayer extends LayerInput {
         List<Options> response = new ArrayList();
         for (int i = 0; i < getOut_depth(); i++) {
             Options opt = new Options();
-            opt.put("filters", filters[i].getW());
-            opt.put("grads", filters[i].getDw());
-            opt.put("l1_decay_mul", l1_decay_mul);
-            opt.put("l2_decay_mul", l2_decay_mul);
+            opt.put("filters", getFilters(i).getW());
+            opt.put("grads", getFilters(i).getDw());
+            opt.put("l1_decay_mul", getL1_decay_mul());
+            opt.put("l2_decay_mul", getL2_decay_mul());
             response.add(opt);
         }
         Options opt = new Options();
@@ -176,10 +167,10 @@ public class ConvLayer extends LayerInput {
         opt.put("sy", sy);
         opt.put("stride", stride);
         opt.put("in_depth", in_depth);
-        opt.put("l1_decay_mul", l1_decay_mul);
-        opt.put("l2_decay_mul", l2_decay_mul);
+        opt.put("l1_decay_mul", getL1_decay_mul());
+        opt.put("l2_decay_mul", getL2_decay_mul());
         opt.put("pad", pad);
-        opt.put("filters", filters);
+        opt.put("filters", getFilters());
         //loop filters
         opt.put("biases", biases);
         return opt;

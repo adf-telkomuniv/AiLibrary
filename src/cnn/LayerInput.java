@@ -45,6 +45,10 @@ public class LayerInput {
     public double backward(int y) {
         return 0;
     }
+    
+    public void backward(){
+        
+    }
 
     public List<Options> getParamsAndGrads() {
         return null;
