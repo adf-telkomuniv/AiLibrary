@@ -25,32 +25,32 @@ public class NewClass1 {
         String[][] s;
         out = new String[]{cl[0], cl[1], cl[2], cl[3]};
 
-//        yy = new String[]{cl[3], cl[2], cl[1], cl[0]};
-//        s = new String[][]{yy, yy, yy};
-//        ruleVeryLow.generate(s, out.clone());
-//
-//        yy = new String[]{cl[3], cl[2], cl[0], cl[1]};
-//        s = new String[][]{yy, yy, yy};
-//        ruleLow.generate(s, out.clone());
-//
-//        yy = new String[]{cl[0], cl[1], cl[3], cl[2]};
-//        s = new String[][]{yy, yy, yy};
-//        ruleMiddle.generate(s, out.clone());
-//
-//        yy = new String[]{cl[0], cl[1], cl[2], cl[3]};
-//        s = new String[][]{yy, yy, yy};
-//        ruleHigh.generate(s, out.clone());
-        s = new String[][]{cl, cl, cl};
-        
-        
-        out = new String[]{cl[3], cl[2], cl[0], cl[0]};
+        yy = new String[]{cl[2], cl[2], cl[1], cl[0]};
+        s = new String[][]{yy, yy, yy};
         ruleVeryLow.generate(s, out.clone());
-        out = new String[]{cl[2], cl[3], cl[0], cl[0]};
+
+        yy = new String[]{cl[2], cl[2], cl[0], cl[1]};
+        s = new String[][]{yy, yy, yy};
         ruleLow.generate(s, out.clone());
-        out = new String[]{cl[0], cl[0], cl[3], cl[2]};
+
+        yy = new String[]{cl[1], cl[2], cl[3], cl[2]};
+        s = new String[][]{yy, yy, yy};
         ruleMiddle.generate(s, out.clone());
-        out = new String[]{cl[0], cl[0], cl[2], cl[3]};
+
+        yy = new String[]{cl[1], cl[1], cl[2], cl[3]};
+        s = new String[][]{yy, yy, yy};
         ruleHigh.generate(s, out.clone());
+//        s = new String[][]{cl, cl, cl};
+//        
+//        
+//        out = new String[]{cl[3], cl[2], cl[0], cl[0]};
+//        ruleVeryLow.generate(s, out.clone());
+//        out = new String[]{cl[2], cl[3], cl[0], cl[0]};
+//        ruleLow.generate(s, out.clone());
+//        out = new String[]{cl[0], cl[0], cl[3], cl[2]};
+//        ruleMiddle.generate(s, out.clone());
+//        out = new String[]{cl[0], cl[0], cl[2], cl[3]};
+//        ruleHigh.generate(s, out.clone());
 
         System.out.println("very low");
         ruleVeryLow.print();

@@ -20,8 +20,8 @@ public class TestGaGui {
         try {
 //            GaSettings settings = new GaSettings(24, 100, 300, 10, 90);
 //            OperatorOptions operations = new OperatorOptions(1, 1, 1);
-            GaSettings settings = new GaSettings(24, 1000, 1000);
-            OperatorOptions operations = new OperatorOptions(2, 3, 4);
+            GaSettings settings = new GaSettings(24, 500, 500);
+            OperatorOptions operations = new OperatorOptions(2, 4, 4);
             GeneticAlgorithm ga = new GeneticAlgorithm(settings, operations);
             settings.setThresholdFitness(1000);
             GAFuzzyEvaluator ev = new GAFuzzyEvaluator();
@@ -29,6 +29,8 @@ public class TestGaGui {
             ga.optimize(ev);
             System.out.println(ga.getBestFitness());
             System.out.println(ga.getBestIndv());
+            double f = ev.evaluateFitness2(ga.getBestIndv());
+            System.out.println("f = "+f);
         } catch (Exception e) {
             e.printStackTrace();
         }
