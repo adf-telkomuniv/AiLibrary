@@ -176,4 +176,60 @@ public class ConvLayer extends LayerDotProducts {
         return opt;
     }
 
+    public int getIn_depth() {
+        return in_depth;
+    }
+
+    public void setIn_depth(int in_depth) {
+        this.in_depth = in_depth;
+    }
+
+    public int getIn_sx() {
+        return in_sx;
+    }
+
+    public void setIn_sx(int in_sx) {
+        this.in_sx = in_sx;
+    }
+
+    public int getIn_sy() {
+        return in_sy;
+    }
+
+    public void setIn_sy(int in_sy) {
+        this.in_sy = in_sy;
+    }
+
+    public int getSx() {
+        return sx;
+    }
+
+    public void setSx(int sx) {
+        this.sx = sx;
+    }
+
+    public int getSy() {
+        return sy;
+    }
+
+    public void setSy(int sy) {
+        this.sy = sy;
+    }
+
+    public int getStride() {
+        return stride;
+    }
+
+    public void setStride(int stride) {
+        this.stride = stride;
+    }
+
+    public int getPad() {
+        return pad;
+    }
+
+    public void setPad(int pad) {
+        this.pad = pad;
+    }
+
 }
