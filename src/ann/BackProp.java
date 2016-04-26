@@ -130,7 +130,8 @@ public class BackProp {
                 x++;
             }
         }
-        return x / output.length;
+        double acc = (double)x / (double)output.length;
+        return acc;
     }
 
     public void train(double[][] input, double[][] target, double[][] inputVal, double[][] targetVal) {
