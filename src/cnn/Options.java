@@ -19,6 +19,10 @@ public class Options {
     public Options() {
         opt = new HashMap();
     }
+    
+    public int size(){
+        return opt.size();
+    }
 
     public void put(String fielad_name, Object value) {
         opt.put(fielad_name, value);
@@ -34,6 +38,11 @@ public class Options {
             }
         }
         return ret;
+    }
+
+    public boolean find(String field) {
+        Object f = opt.get(field);
+        return f != null;
     }
 
     public Object getOpt(String field, Object default_value) {

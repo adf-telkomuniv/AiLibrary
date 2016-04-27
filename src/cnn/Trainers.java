@@ -5,7 +5,9 @@
  */
 package cnn;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -25,8 +27,8 @@ public class Trainers {
     private double beta1;
     private double beta2;
     private int k;
-    private double[] gsum;
-    private double[] xsum;
+    private List<double[]> gsum;
+    private List<double[]> xsum;
     private boolean regression;
 
     public Trainers(Net net, Options opt) {
@@ -49,6 +51,8 @@ public class Trainers {
         } else {
             regression = false;
         }
+        gsum = new ArrayList();
+        xsum = new ArrayList();
     }
 
     public Options train(Vol x, int[] y) {
@@ -67,8 +71,28 @@ public class Trainers {
         System.out.println("backward time = " + (bwd_time / (1000 * 60 * 60)));
 
         //check if regression
-        
-        return null;
+        if (regression && y.length <= 1) {
+            throw new IllegalStateException("y must be an array for regression type");
+        }
+
+        k++;
+        if (k % batch_size == 0) {
+            List<Options> pglist = net.getParamsAndGrads();
+            if (gsum.size() == 0 && (method.equals("sgd") || momentum > 0.0)) {
+                for (int i = 0; i < pglist.size(); i++) {
+                    Options[] layers = (Options[]) pglist.get(i).get("layers");
+                    gsum.add(new double[layers.length]);
+                    if (method.equals("adam") || method.equals("adadelta")) {
+                        xsum.add(new double[layers.length]);
+                    } else {
+                        xsum.add(null);
+                    }
+                }
+            }
+            //s
+        }
+
+//        return null;
     }
 
 }

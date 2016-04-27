@@ -16,8 +16,9 @@ public class DropoutLayer extends LayerInput {
     private double drop_prob;
     private boolean[] dropped;
 
-    public DropoutLayer(Vol vol, Options opt) {
-        super(vol, opt);
+    public DropoutLayer(Options opt) {
+//        super(vol, opt);
+        super(opt);
         setLayer_type("dropout");
         drop_prob = (double) opt.getOpt("drop_prob", 0.5);
         dropped = new boolean[getOut_sx() * getOut_sy() * getOut_depth()];

@@ -17,8 +17,10 @@ public class LayerDotProducts extends LayerInput {
     private Vol[] filters;
     Vol biases;
 
-    public LayerDotProducts(Vol vol, Options opt) {
-        super(vol, opt);
+//    public LayerDotProducts(Vol vol, Options opt) {
+    public LayerDotProducts(Options opt) {
+//        super(vol, opt);
+        super(opt);
         l1_decay_mul = (double) opt.getOpt("l1_decay_mul", 0);
         l2_decay_mul = (double) opt.getOpt("l2_decay_mul", 1);
         bias = (double) opt.getOpt("bias_pref", 0);
@@ -53,16 +55,16 @@ public class LayerDotProducts extends LayerInput {
     public Vol[] getFilters() {
         return filters;
     }
-    
-    public Vol getFilters(int i){
+
+    public Vol getFilters(int i) {
         return filters[i];
     }
 
     public void setFilters(Vol[] filters) {
         this.filters = filters;
     }
-    
-    public void setFilters(int i, Vol filter){
+
+    public void setFilters(int i, Vol filter) {
         filters[i] = filter;
     }
 

@@ -15,8 +15,8 @@ public class LayerLoss extends LayerInput {
 
     private int num_inputs;
 
-    public LayerLoss(Vol vol, Options opt) {
-        super(vol, opt);
+    public LayerLoss(Options opt) {
+        super(opt);
         int in_sx = (int) opt.get("in_sx");
         int in_sy = (int) opt.get("in_sy");
         int in_depth = (int) opt.get("in_depth");
@@ -29,7 +29,6 @@ public class LayerLoss extends LayerInput {
 //        super(vol, out_sx, out_sy, out_depth);
 //        num_inputs = out_sx * out_sy * out_depth;
 //    }
-    
     public int getNum_inputs() {
         return num_inputs;
     }

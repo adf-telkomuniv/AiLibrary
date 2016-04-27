@@ -22,8 +22,10 @@ public class ConvLayer extends LayerDotProducts {
     private int stride;
     private int pad;
 
-    public ConvLayer(Vol vol, Options opt) {
-        super(vol, opt);
+//    public ConvLayer(Vol vol, Options opt) {
+    public ConvLayer(Options opt) {
+//        super(vol, opt);
+        super(opt);
         setOut_depth((int) opt.get("filters"));
         sx = (int) opt.get("sx");
         in_depth = (int) opt.get("in_depth");

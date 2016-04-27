@@ -13,8 +13,8 @@ public class LayerNonLinear extends LayerInput{
     
     
 
-    public LayerNonLinear(Vol vol, Options opt) {
-        super(vol, opt);
+    public LayerNonLinear( Options opt) {
+        super( opt);
     }
 
     

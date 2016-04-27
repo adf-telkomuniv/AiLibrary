@@ -11,8 +11,8 @@ package cnn;
  */
 public class SigmoidLayer extends LayerNonLinear {
 
-    public SigmoidLayer(Vol vol, Options opt) {
-        super(vol, opt);
+    public SigmoidLayer(Options opt) {
+        super(opt);
         setLayer_type("sigmoid");
         setOut_depth((int) opt.get("in_depth"));
     }

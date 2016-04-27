@@ -13,8 +13,8 @@ import java.util.Map;
  */
 public class SVMLayer extends LayerLoss {
 
-    public SVMLayer(Vol vol, Options opt) {
-        super(vol, opt);
+    public SVMLayer(Options opt) {
+        super(opt);
         setLayer_type("svm");
 
     }
@@ -31,7 +31,8 @@ public class SVMLayer extends LayerLoss {
     }
 
     @Override
-    public double backward(int y) {
+    public double backward(int[] dy) {
+        int y = dy[0];
         Vol x = getIn_act();
         x.setDw(new double[x.getW().length]);
         double yscore = x.getW(y);

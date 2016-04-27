@@ -22,8 +22,9 @@ public class PoolLayer extends LayerInput {
     private int pad;
     private int[] switchx, switchy;
 
-    public PoolLayer(Vol vol, Options opt) {
-        super(vol, opt);
+    public PoolLayer(Options opt) {
+//        super(vol, opt);
+        super(opt);
         sx = (int) opt.get("sx");
         in_sx = (int) opt.get("in_sx");
         in_sy = (int) opt.get("in_sy");

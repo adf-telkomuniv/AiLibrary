@@ -11,8 +11,8 @@ package cnn;
  */
 public class ReluLayer extends LayerNonLinear {
 
-    public ReluLayer(Vol vol, Options opt) {
-        super(vol, opt);
+    public ReluLayer( Options opt) {
+        super(opt);
         setLayer_type("relu");
         setOut_depth((int) opt.get("in_depth"));
     }

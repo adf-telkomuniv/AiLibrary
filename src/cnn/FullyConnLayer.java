@@ -16,8 +16,8 @@ public class FullyConnLayer extends LayerDotProducts {
 
     private int num_inputs;
 
-    public FullyConnLayer(Vol vol, Options opt) {
-        super(vol, opt);
+    public FullyConnLayer( Options opt) {
+        super( opt);
         setOut_depth((int) opt.get(new String[]{"num_neurons", "filters"}));
         int in_depth = (int) opt.get("in_depth");
         int in_sx = (int) opt.get("in_sx");

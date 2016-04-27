@@ -11,8 +11,8 @@ package cnn;
  */
 public class TanhLayer extends LayerNonLinear {
 
-    public TanhLayer(Vol vol, Options opt) {
-        super(vol, opt);
+    public TanhLayer(Options opt) {
+        super(opt);
         setOut_depth((int) opt.get("in_depth"));
         setLayer_type("tanh");
     }

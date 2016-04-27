@@ -13,8 +13,8 @@ import java.util.Map;
  */
 public class Regressionlayer extends LayerLoss {
 
-    public Regressionlayer(Vol vol, Options opt) {
-        super(vol, opt);
+    public Regressionlayer(Options opt) {
+        super(opt);
         setLayer_type("regression");
     }
 
@@ -29,37 +29,45 @@ public class Regressionlayer extends LayerLoss {
         return V;
     }
 
+//    public double backward(int y) {
+//        Vol x = getIn_act();
+//        x.setDw(new double[x.getW().length]);
+//        double loss = 0;
+//        double dy = x.getW(0) - y;
+//        x.setDw(0, dy);
+//        loss += 0.5 * dy * dy;
+//        return loss;
+//    }
+//    public double backward(int i, double yi) {
+//        Vol x = getIn_act();
+//        x.setDw(new double[x.getW().length]);
+//        double loss = 0;
+//        double dy = x.getW(i) - yi;
+//        x.setDw(i, dy);
+//        loss += 0.5 * dy * dy;
+//        return loss;
+//    }
     @Override
-    public double backward(int y) {
-        Vol x = getIn_act();
-        x.setDw(new double[x.getW().length]);
-        double loss = 0;
-        double dy = x.getW(0) - y;
-        x.setDw(0, dy);
-        loss += 0.5 * dy * dy;
-        return loss;
-    }
-
-    public double backward(int i, double yi) {
-        Vol x = getIn_act();
-        x.setDw(new double[x.getW().length]);
-        double loss = 0;
-        double dy = x.getW(i) - yi;
-        x.setDw(i, dy);
-        loss += 0.5 * dy * dy;
-        return loss;
-    }
-
     public double backward(int[] y) {
-        Vol x = getIn_act();
-        x.setDw(new double[x.getW().length]);
-        double loss = 0;
-        for (int i = 0; i < getOut_depth(); i++) {
-            double dy = x.getW(i) - y[i];
-            x.setDw(i, dy);
+        if (y.length == 1) {
+            Vol x = getIn_act();
+            x.setDw(new double[x.getW().length]);
+            double loss = 0;
+            double dy = x.getW(0) - y[0];
+            x.setDw(0, dy);
             loss += 0.5 * dy * dy;
+            return loss;
+        } else {
+            Vol x = getIn_act();
+            x.setDw(new double[x.getW().length]);
+            double loss = 0;
+            for (int i = 0; i < getOut_depth(); i++) {
+                double dy = x.getW(i) - y[i];
+                x.setDw(i, dy);
+                loss += 0.5 * dy * dy;
+            }
+            return loss;
         }
-        return loss;
     }
 
     @Override

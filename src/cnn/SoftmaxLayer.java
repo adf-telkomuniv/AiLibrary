@@ -16,8 +16,8 @@ public class SoftmaxLayer extends LayerLoss {
 
     private double[] es;
 
-    public SoftmaxLayer(Vol vol, Options opt) {
-        super(vol, opt);
+    public SoftmaxLayer(Options opt) {
+        super(opt);
         setLayer_type("softmax");
     }
 
@@ -26,7 +26,8 @@ public class SoftmaxLayer extends LayerLoss {
 //        setLayer_type("softmax");
 //    }
     @Override
-    public double backward(int y) {
+    public double backward(int[] dy) {
+        int y = dy[0];
         Vol x = getIn_act();
         x.setDw(new double[x.getW().length]);
         for (int i = 0; i < getOut_depth(); i++) {

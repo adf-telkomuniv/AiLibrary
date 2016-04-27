@@ -20,8 +20,9 @@ public class NormalizationLayer extends LayerInput {
     private double beta;
     private Vol S_cache;
 
-    public NormalizationLayer(Vol vol, Options opt) {
-        super(vol, opt);
+    public NormalizationLayer(Options opt) {
+//        super(vol, opt);
+        super( opt);
         k = (int) opt.get("k");
         n = (int) opt.get("n");
         alpha = (double) opt.get("alpha");

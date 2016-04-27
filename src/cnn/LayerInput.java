@@ -15,14 +15,15 @@ import java.util.Map;
  */
 public class LayerInput {
 
-    private Vol vol;
+//    private Vol vol;
     private int out_sx, out_sy;
     private int out_depth;
     private String layer_type;
     private Vol in_act, out_act;
 
-    public LayerInput(Vol vol, Options opt) {
-        this.vol = vol;
+//    public LayerInput(Vol vol, Options opt) {
+    public LayerInput(Options opt) {
+//        this.vol = vol;
         out_depth = (int) opt.getOpt(new String[]{"out_depth", "depth"}, 0);
         out_sx = (int) opt.getOpt(new String[]{"out_sx", "sx", "width"}, 1);
         out_sy = (int) opt.getOpt(new String[]{"out_sy", "sy", "height"}, 1);
@@ -45,9 +46,13 @@ public class LayerInput {
     public double backward(int y) {
         return 0;
     }
-    
-    public void backward(){
-        
+
+    public double backward(int[] y) {
+        return 0;
+    }
+
+    public void backward() {
+
     }
 
     public List<Options> getParamsAndGrads() {
@@ -79,14 +84,13 @@ public class LayerInput {
         this.out_act = out_act;
     }
 
-    public Vol getVol() {
-        return vol;
-    }
-
-    public void setVol(Vol vol) {
-        this.vol = vol;
-    }
-
+//    public Vol getVol() {
+//        return vol;
+//    }
+//
+//    public void setVol(Vol vol) {
+//        this.vol = vol;
+//    }
     public int getOut_sx() {
         return out_sx;
     }
