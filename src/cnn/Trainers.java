@@ -80,16 +80,43 @@ public class Trainers {
             List<Options> pglist = net.getParamsAndGrads();
             if (gsum.size() == 0 && (method.equals("sgd") || momentum > 0.0)) {
                 for (int i = 0; i < pglist.size(); i++) {
-                    Options[] layers = (Options[]) pglist.get(i).get("layers");
-                    gsum.add(new double[layers.length]);
+                    double[] params = (double[]) pglist.get(i).get("params");
+                    gsum.add(new double[params.length]);
                     if (method.equals("adam") || method.equals("adadelta")) {
-                        xsum.add(new double[layers.length]);
+                        xsum.add(new double[params.length]);
                     } else {
                         xsum.add(null);
                     }
                 }
             }
-            //s
+            for (int i = 0; i < pglist.size(); i++) {
+                Options pg = pglist.get(i);
+                double[] p = (double[]) pg.get("params");
+                double[] g = (double[]) pg.get("grads");
+
+                double l2_decay_mul = (double) pg.getOpt("l2_decay_mul", 1.0);
+                double l1_decay_mul = (double) pg.getOpt("l1_decay_mul", 1.0);
+                double l2_decay = this.l2_decay * l2_decay_mul;
+                double l1_decay = this.l1_decay * l1_decay_mul;
+
+                int plen = p.length;
+                for (int j = 0; j < plen; j++) {
+                    l2_decay_loss += l2_decay * p[j] * p[j] / 2;
+                    l1_decay_loss += l1_decay * Math.abs(p[j]);
+                    double l1grad = l1_decay * (p[j] > 0 ? 1 : -1);
+                    double l2grad = l2_decay * (p[j]);
+
+                    double gij = (l2grad + l1grad + g[j]) / this.batch_size;
+
+                    double[] gsumi = this.gsum.get(i);
+                    double[] xsumi = this.xsum.get(i);
+
+                    if (method.equals("adam")//) {
+                        
+                    }
+                }
+
+            }
         }
 
 //        return null;

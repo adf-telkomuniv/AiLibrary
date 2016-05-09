@@ -78,14 +78,14 @@ public class FullyConnLayer extends LayerDotProducts {
         List<Options> response = new ArrayList();
         for (int i = 0; i < getOut_depth(); i++) {
             Options opt = new Options();
-            opt.put("filters", getFilters(i).getW());
+            opt.put("params", getFilters(i).getW());
             opt.put("grads", getFilters(i).getDw());
             opt.put("l1_decay_mul", getL1_decay_mul());
             opt.put("l2_decay_mul", getL2_decay_mul());
             response.add(opt);
         }
         Options opt = new Options();
-        opt.put("filters", biases.getW());
+        opt.put("params", biases.getW());
         opt.put("grads", biases.getDw());
         opt.put("l1_decay_mul", 0);
         opt.put("l2_decay_mul", 0);
