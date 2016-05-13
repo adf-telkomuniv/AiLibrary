@@ -111,15 +111,54 @@ public class Trainers {
                     double[] gsumi = this.gsum.get(i);
                     double[] xsumi = this.xsum.get(i);
 
-                    if (method.equals("adam")//) {
-                        
+                    if (method.equals("adam")) {
+                        gsumi[j] = gsumi[j] * beta1 + (1 - beta1) * gij;
+                        xsumi[j] = xsumi[j] * beta2 + (1 - beta2) * gij * gij;
+                        double biasCorr1 = gsumi[j] * (1 - Math.pow(beta1, k));
+                        double biasCorr2 = xsumi[j] * (1 - Math.pow(beta2, k));
+                        double dx = -learning_rate * biasCorr1 / (Math.sqrt(biasCorr2) + eps);
+                        p[j] += dx;
+                    } else if (method.equals("adagrad")) {
+                        gsumi[j] = gsumi[j] * gij * gij;
+                        double dx = -learning_rate / Math.sqrt(gsumi[j] + eps) * gij;
+                        p[j] += dx;
+                    } else if (method.equals("windowgrad")) {
+                        gsumi[j] = ro * gsumi[j] + (1 - ro) * gij * gij;
+                        double dx = -learning_rate / Math.sqrt(gsumi[j] + eps) * gij;
+                        p[j] += dx;
+                    } else if (method.equals("adadelta")) {
+                        gsumi[j] = ro * gsumi[j] + (1 - ro) * gij * gij;
+                        double dx = -Math.sqrt((xsumi[j] + eps) / (gsumi[j] + eps)) * gij;
+                        xsumi[j] = ro * xsumi[j] + (1 - ro) * dx * dx;
+                        p[j] += dx;
+                    } else if (method.equals("nesterov")) {
+                        double dx = gsumi[j];
+                        gsumi[j] = gsumi[j] * momentum + learning_rate * gij;
+                        dx = momentum * dx - (1.0 + momentum) * gsumi[j];
+                        p[j] += dx;
+                    } else {
+                        if (momentum > 0.0) {
+                            double dx = momentum * gsumi[j] - learning_rate * gij;
+                            gsumi[j] = dx;
+                            p[j] += dx;
+                        } else {
+                            p[j] += -learning_rate * gij;
+                        }
                     }
+                    g[j] = 0.0;
                 }
-
             }
         }
 
-//        return null;
+        Options options = new Options();
+        options.put("fwd_time", fwd_time);
+        options.put("bwd_time", bwd_time);
+        options.put("l2_decay_loss", l2_decay_loss);
+        options.put("l1_decay_loss", l1_decay_loss);
+        options.put("cost_loss", cost_loss);
+        options.put("softmax_loss", cost_loss);
+        options.put("loss", cost_loss + l1_decay_loss + l2_decay_loss);
+        return options;
     }
 
 }
