@@ -161,4 +161,111 @@ public class Trainers {
         return options;
     }
 
+    
+//    public Options train(Vol x, int[] y) {
+//        Date start = new Date();
+//        net.forward(x, true);
+//        Date end = new Date();
+//        long fwd_time = end.getTime() - start.getTime();
+//        System.out.println("forward time = " + (fwd_time / (1000 * 60 * 60)));
+//
+//        start = new Date();
+//        double cost_loss = net.backward(y);
+//        double l2_decay_loss = 0.0;
+//        double l1_decay_loss = 0.0;
+//        end = new Date();
+//        long bwd_time = end.getTime() - start.getTime();
+//        System.out.println("backward time = " + (bwd_time / (1000 * 60 * 60)));
+//
+//        //check if regression
+//        if (regression && y.length <= 1) {
+//            throw new IllegalStateException("y must be an array for regression type");
+//        }
+//
+//        k++;
+//        if (k % batch_size == 0) {
+//            List<Options> pglist = net.getParamsAndGrads();
+//            if (gsum.size() == 0 && (method.equals("sgd") || momentum > 0.0)) {
+//                for (int i = 0; i < pglist.size(); i++) {
+//                    double[] params = (double[]) pglist.get(i).get("params");
+//                    gsum.add(new double[params.length]);
+//                    if (method.equals("adam") || method.equals("adadelta")) {
+//                        xsum.add(new double[params.length]);
+//                    } else {
+//                        xsum.add(null);
+//                    }
+//                }
+//            }
+//            for (int i = 0; i < pglist.size(); i++) {
+//                Options pg = pglist.get(i);
+//                double[] p = (double[]) pg.get("params");
+//                double[] g = (double[]) pg.get("grads");
+//
+//                double l2_decay_mul = (double) pg.getOpt("l2_decay_mul", 1.0);
+//                double l1_decay_mul = (double) pg.getOpt("l1_decay_mul", 1.0);
+//                double l2_decay = this.l2_decay * l2_decay_mul;
+//                double l1_decay = this.l1_decay * l1_decay_mul;
+//
+//                int plen = p.length;
+//                for (int j = 0; j < plen; j++) {
+//                    l2_decay_loss += l2_decay * p[j] * p[j] / 2;
+//                    l1_decay_loss += l1_decay * Math.abs(p[j]);
+//                    double l1grad = l1_decay * (p[j] > 0 ? 1 : -1);
+//                    double l2grad = l2_decay * (p[j]);
+//
+//                    double gij = (l2grad + l1grad + g[j]) / this.batch_size;
+//
+//                    double[] gsumi = this.gsum.get(i);
+//                    double[] xsumi = this.xsum.get(i);
+//
+//                    if (method.equals("adam")) {
+//                        gsumi[j] = gsumi[j] * beta1 + (1 - beta1) * gij;
+//                        xsumi[j] = xsumi[j] * beta2 + (1 - beta2) * gij * gij;
+//                        double biasCorr1 = gsumi[j] * (1 - Math.pow(beta1, k));
+//                        double biasCorr2 = xsumi[j] * (1 - Math.pow(beta2, k));
+//                        double dx = -learning_rate * biasCorr1 / (Math.sqrt(biasCorr2) + eps);
+//                        p[j] += dx;
+//                    } else if (method.equals("adagrad")) {
+//                        gsumi[j] = gsumi[j] * gij * gij;
+//                        double dx = -learning_rate / Math.sqrt(gsumi[j] + eps) * gij;
+//                        p[j] += dx;
+//                    } else if (method.equals("windowgrad")) {
+//                        gsumi[j] = ro * gsumi[j] + (1 - ro) * gij * gij;
+//                        double dx = -learning_rate / Math.sqrt(gsumi[j] + eps) * gij;
+//                        p[j] += dx;
+//                    } else if (method.equals("adadelta")) {
+//                        gsumi[j] = ro * gsumi[j] + (1 - ro) * gij * gij;
+//                        double dx = -Math.sqrt((xsumi[j] + eps) / (gsumi[j] + eps)) * gij;
+//                        xsumi[j] = ro * xsumi[j] + (1 - ro) * dx * dx;
+//                        p[j] += dx;
+//                    } else if (method.equals("nesterov")) {
+//                        double dx = gsumi[j];
+//                        gsumi[j] = gsumi[j] * momentum + learning_rate * gij;
+//                        dx = momentum * dx - (1.0 + momentum) * gsumi[j];
+//                        p[j] += dx;
+//                    } else {
+//                        if (momentum > 0.0) {
+//                            double dx = momentum * gsumi[j] - learning_rate * gij;
+//                            gsumi[j] = dx;
+//                            p[j] += dx;
+//                        } else {
+//                            p[j] += -learning_rate * gij;
+//                        }
+//                    }
+//                    g[j] = 0.0;
+//                }
+//            }
+//        }
+//
+//        Options options = new Options();
+//        options.put("fwd_time", fwd_time);
+//        options.put("bwd_time", bwd_time);
+//        options.put("l2_decay_loss", l2_decay_loss);
+//        options.put("l1_decay_loss", l1_decay_loss);
+//        options.put("cost_loss", cost_loss);
+//        options.put("softmax_loss", cost_loss);
+//        options.put("loss", cost_loss + l1_decay_loss + l2_decay_loss);
+//        return options;
+//    }
+    
 }
