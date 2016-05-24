@@ -16,7 +16,7 @@ public class Net {
 
     private List<LayerInput> layers;
 
-    public Net(Options opt) {
+    public Net() {
         layers = new ArrayList();
     }
 
@@ -83,6 +83,10 @@ public class Net {
     }
 
     // forward process
+    public Vol forward(Vol V) {
+        return forward(V, false);
+    }
+
     public Vol forward(Vol V, boolean is_training) {
         Vol act = layers.get(0).forward(V, is_training);
         for (int i = 1; i < layers.size(); i++) {
@@ -106,7 +110,6 @@ public class Net {
 //        }
 //        return loss;
 //    }
-
     public double backward(int[] y) {
         int N = layers.size();
         double loss = layers.get(N - 1).backward(y);

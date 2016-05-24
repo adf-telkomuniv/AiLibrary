@@ -33,7 +33,7 @@ public class Utils {
         return mu + gaussRandom() * std;
     }
 
-    public boolean arrContains(double[] arr, double x) {
+    public static boolean arrContains(double[] arr, double x) {
         for (int i = 0; i < arr.length; i++) {
             if (arr[i] == x) {
                 return true;
@@ -42,7 +42,7 @@ public class Utils {
         return false;
     }
 
-    public boolean listContains(List<Double> lst, double x) {
+    public static boolean listContains(List<Double> lst, double x) {
         for (int i = 0; i < lst.size(); i++) {
             if (lst.get(i) == x) {
                 return true;
@@ -51,21 +51,61 @@ public class Utils {
         return false;
     }
 
-    public double[] arrUnique(double[] arr) {
-        List<Double> temp = new ArrayList();
+    public static boolean listContains(List<Integer> lst, int x) {
+        for (int i = 0; i < lst.size(); i++) {
+            if (lst.get(i) == x) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static int[] arrUnique(int[] arr) {
+        List<Integer> temp = new ArrayList();
         for (int i = 0; i < arr.length; i++) {
             if (!listContains(temp, arr[i])) {
                 temp.add(arr[i]);
             }
         }
-        double[] re = new double[temp.size()];
+        int[] re = new int[temp.size()];
         for (int i = 0; i < re.length; i++) {
             re[i] = temp.get(i);
         }
         return re;
     }
 
-    public Options maxmin(double[] w) {
+    public static boolean listContains(List<int[]> lst, int[] x) {
+        for (int i = 0; i < lst.size(); i++) {
+            int[] d = lst.get(i);
+            if(d.length != x.length){
+                continue;
+            }
+            for (int j = 0; j < d.length; j++) {
+                if(d[i] != x[i]){
+                    continue;
+                }
+                
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public static int[][] arrUnique(int[][] arr) {
+        List<int[]> temp = new ArrayList();
+        for (int i = 0; i < arr.length; i++) {
+            if (!listContains(temp, arr[i])) {
+                temp.add(arr[i]);
+            }
+        }
+        int[][] re = new int[temp.size()][];
+        for (int i = 0; i < re.length; i++) {
+            re[i] = temp.get(i);
+        }
+        return re;
+    }
+
+    public static Options maxmin(double[] w) {
         Options re = null;
         if (w.length == 0) {
             return re;
@@ -93,10 +133,10 @@ public class Utils {
         return re;
     }
 
-    public double[] randperm(int n) {
+    public static int[] randperm(int n) {
         int j = 0;
-        double temp;
-        double[] result = new double[n];
+        int temp;
+        int[] result = new int[n];
         for (int k = 0; k < result.length; k++) {
             result[k] = k;
         }
@@ -109,7 +149,7 @@ public class Utils {
         return result;
     }
 
-    public double weightedSample(double[] lst, double[] probs) {
+    public static double weightedSample(double[] lst, double[] probs) {
         double p = randf(0, 1.0);
         double cumprob = 0.0;
         for (int k = 0; k < lst.length; k++) {
