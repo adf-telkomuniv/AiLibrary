@@ -18,7 +18,7 @@ public class MaxOutLayer extends LayerNonLinear {
         super(opt);
         setLayer_type("maxout");
         group_size = (int) opt.getOpt("group_size", 2);
-        setOut_depth(Math.floorDiv((int) opt.get("in_depth"), group_size));
+        setOut_depth(Math.floorDiv((int) opt.getOpt("in_depth"), group_size));
         switches = new int[getOut_sx() * getOut_sy() * getOut_depth()];
     }
 

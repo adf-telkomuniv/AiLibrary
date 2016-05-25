@@ -14,7 +14,7 @@ public class ReluLayer extends LayerNonLinear {
     public ReluLayer( Options opt) {
         super(opt);
         setLayer_type("relu");
-        setOut_depth((int) opt.get("in_depth"));
+        setOut_depth((int) opt.getOpt("in_depth"));
     }
 
     @Override

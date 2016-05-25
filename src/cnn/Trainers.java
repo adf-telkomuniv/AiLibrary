@@ -80,7 +80,7 @@ public class Trainers {
             List<Options> pglist = net.getParamsAndGrads();
             if (gsum.size() == 0 && (method.equals("sgd") || momentum > 0.0)) {
                 for (int i = 0; i < pglist.size(); i++) {
-                    double[] params = (double[]) pglist.get(i).get("params");
+                    double[] params = (double[]) pglist.get(i).getOpt("params");
                     gsum.add(new double[params.length]);
                     if (method.equals("adam") || method.equals("adadelta")) {
                         xsum.add(new double[params.length]);
@@ -91,8 +91,8 @@ public class Trainers {
             }
             for (int i = 0; i < pglist.size(); i++) {
                 Options pg = pglist.get(i);
-                double[] p = (double[]) pg.get("params");
-                double[] g = (double[]) pg.get("grads");
+                double[] p = (double[]) pg.getOpt("params");
+                double[] g = (double[]) pg.getOpt("grads");
 
                 double l2_decay_mul = (double) pg.getOpt("l2_decay_mul", 1.0);
                 double l1_decay_mul = (double) pg.getOpt("l1_decay_mul", 1.0);
@@ -187,7 +187,7 @@ public class Trainers {
 //            List<Options> pglist = net.getParamsAndGrads();
 //            if (gsum.size() == 0 && (method.equals("sgd") || momentum > 0.0)) {
 //                for (int i = 0; i < pglist.size(); i++) {
-//                    double[] params = (double[]) pglist.get(i).get("params");
+//                    double[] params = (double[]) pglist.getOpt(i).getOpt("params");
 //                    gsum.add(new double[params.length]);
 //                    if (method.equals("adam") || method.equals("adadelta")) {
 //                        xsum.add(new double[params.length]);
@@ -197,9 +197,9 @@ public class Trainers {
 //                }
 //            }
 //            for (int i = 0; i < pglist.size(); i++) {
-//                Options pg = pglist.get(i);
-//                double[] p = (double[]) pg.get("params");
-//                double[] g = (double[]) pg.get("grads");
+//                Options pg = pglist.getOpt(i);
+//                double[] p = (double[]) pg.getOpt("params");
+//                double[] g = (double[]) pg.getOpt("grads");
 //
 //                double l2_decay_mul = (double) pg.getOpt("l2_decay_mul", 1.0);
 //                double l1_decay_mul = (double) pg.getOpt("l1_decay_mul", 1.0);
@@ -215,8 +215,8 @@ public class Trainers {
 //
 //                    double gij = (l2grad + l1grad + g[j]) / this.batch_size;
 //
-//                    double[] gsumi = this.gsum.get(i);
-//                    double[] xsumi = this.xsum.get(i);
+//                    double[] gsumi = this.gsum.getOpt(i);
+//                    double[] xsumi = this.xsum.getOpt(i);
 //
 //                    if (method.equals("adam")) {
 //                        gsumi[j] = gsumi[j] * beta1 + (1 - beta1) * gij;

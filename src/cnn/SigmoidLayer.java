@@ -14,7 +14,7 @@ public class SigmoidLayer extends LayerNonLinear {
     public SigmoidLayer(Options opt) {
         super(opt);
         setLayer_type("sigmoid");
-        setOut_depth((int) opt.get("in_depth"));
+        setOut_depth((int) opt.getOpt("in_depth"));
     }
 
     @Override

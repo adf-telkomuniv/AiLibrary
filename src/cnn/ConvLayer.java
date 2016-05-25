@@ -26,11 +26,11 @@ public class ConvLayer extends LayerDotProducts {
     public ConvLayer(Options opt) {
 //        super(vol, opt);
         super(opt);
-        setOut_depth((int) opt.get("filters"));
-        sx = (int) opt.get("sx");
-        in_depth = (int) opt.get("in_depth");
-        in_sx = (int) opt.get("in_sx");
-        in_sy = (int) opt.get("in_sy");
+        setOut_depth((int) opt.getOpt("filters"));
+        sx = (int) opt.getOpt("sx");
+        in_depth = (int) opt.getOpt("in_depth");
+        in_sx = (int) opt.getOpt("in_sx");
+        in_sy = (int) opt.getOpt("in_sy");
 
         sy = (int) opt.getOpt("sy", sx);
         stride = (int) opt.getOpt("stride", 1);

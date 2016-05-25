@@ -18,10 +18,10 @@ public class FullyConnLayer extends LayerDotProducts {
 
     public FullyConnLayer( Options opt) {
         super( opt);
-        setOut_depth((int) opt.get(new String[]{"num_neurons", "filters"}));
-        int in_depth = (int) opt.get("in_depth");
-        int in_sx = (int) opt.get("in_sx");
-        int in_sy = (int) opt.get("in_sy");
+        setOut_depth((int) opt.getOpt(new String[]{"num_neurons", "filters"}));
+        int in_depth = (int) opt.getOpt("in_depth");
+        int in_sx = (int) opt.getOpt("in_sx");
+        int in_sy = (int) opt.getOpt("in_sy");
         num_inputs = in_sx * in_sy * in_depth;
         setOut_sx(1);
         setOut_sy(1);

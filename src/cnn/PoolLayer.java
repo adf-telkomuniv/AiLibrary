@@ -25,10 +25,10 @@ public class PoolLayer extends LayerInput {
     public PoolLayer(Options opt) {
 //        super(vol, opt);
         super(opt);
-        sx = (int) opt.get("sx");
-        in_sx = (int) opt.get("in_sx");
-        in_sy = (int) opt.get("in_sy");
-        in_depth = (int) opt.get("in_depth");
+        sx = (int) opt.getOpt("sx");
+        in_sx = (int) opt.getOpt("in_sx");
+        in_sy = (int) opt.getOpt("in_sy");
+        in_depth = (int) opt.getOpt("in_depth");
         sy = (int) opt.getOpt("sy", sx);
         stride = (int) opt.getOpt("stride", 2);
         pad = (int) opt.getOpt("pad", 2);

@@ -22,7 +22,7 @@ public class Net {
 
     public void makeLayers(Options[] defs) {
         Utils.asserts(defs.length >= 2, "Error, num layer < 2");
-        Utils.asserts(defs[0].get("type").equals("input"), "first layer must be input");
+        Utils.asserts(defs[0].getOpt("type").equals("input"), "first layer must be input");
         defs = desugar(defs);
 
         layers = new ArrayList();
@@ -34,7 +34,7 @@ public class Net {
                 def.put("in_sy", prev.getOut_sy());
                 def.put("in_depth", prev.getOut_depth());
             }
-            String type = (String) def.get("type");
+            String type = (String) def.getOpt("type");
             switch (type) {
                 case "fc":
                     layers.add(new FullyConnLayer(def));
@@ -104,9 +104,9 @@ public class Net {
 
 //    public double backward(int y) {
 //        int N = layers.size();
-//        double loss = layers.get(N - 1).backward(y);
+//        double loss = layers.getOpt(N - 1).backward(y);
 //        for (int i = N - 2; i >= 0; i--) {
-//            layers.get(i).backward();
+//            layers.getOpt(i).backward();
 //        }
 //        return loss;
 //    }
@@ -159,23 +159,23 @@ public class Net {
         List<Options> new_defs = new ArrayList();
         for (int i = 0; i < defs.length; i++) {
             Options def = defs[i];
-            if (def.get("type").equals("softmax") || def.get("type").equals("svm")) {
+            if (def.getOpt("type").equals("softmax") || def.getOpt("type").equals("svm")) {
                 Options opt = new Options();
                 opt.put("type", "fc");
-                opt.put("num_neurons", def.get("num_classes"));
+                opt.put("num_neurons", def.getOpt("num_classes"));
                 new_defs.add(opt);
             }
-            if (def.get("type").equals("regression")) {
+            if (def.getOpt("type").equals("regression")) {
                 Options opt = new Options();
                 opt.put("type", "fc");
-                opt.put("num_neurons", def.get("num_neurons"));
+                opt.put("num_neurons", def.getOpt("num_neurons"));
                 new_defs.add(opt);
             }
 
-            if ((def.get("type").equals("fc") || def.get("type").equals("conv"))
+            if ((def.getOpt("type").equals("fc") || def.getOpt("type").equals("conv"))
                     && !def.find("bias_pref")) {
                 def.put("bias_pref", 0.0);
-                if (def.find("activation") && ((String) def.get("activation")).equals("relu")) {
+                if (def.find("activation") && ((String) def.getOpt("activation")).equals("relu")) {
                     def.put("bias_pref", 0.1);
                 }
             }
@@ -183,7 +183,7 @@ public class Net {
             new_defs.add(def);
             if (def.find("activation")) {
                 Options opt;
-                String activation = (String) def.get("activation");
+                String activation = (String) def.getOpt("activation");
                 if (activation.equals("relu")) {
                     opt = new Options();
                     opt.put("type", "relu");
@@ -205,10 +205,10 @@ public class Net {
                 } else {
                     throw new IllegalStateException("unsupported " + activation);
                 }
-                if (def.find("drop_prob") && def.get("type").equals("dropout")) {
+                if (def.find("drop_prob") && def.getOpt("type").equals("dropout")) {
                     opt = new Options();
                     opt.put("type", "dropout");
-                    opt.put("drop_prob", (double) def.get("drop_prob"));
+                    opt.put("drop_prob", (double) def.getOpt("drop_prob"));
                 }
             }
         }

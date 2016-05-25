@@ -23,13 +23,13 @@ public class NormalizationLayer extends LayerInput {
     public NormalizationLayer(Options opt) {
 //        super(vol, opt);
         super( opt);
-        k = (int) opt.get("k");
-        n = (int) opt.get("n");
-        alpha = (double) opt.get("alpha");
-        beta = (double) opt.get("beta");
-        setOut_sx((int) opt.get("in_sx"));
-        setOut_sy((int) opt.get("in_sy"));
-        setOut_depth((int) opt.get("in_depth"));
+        k = (int) opt.getOpt("k");
+        n = (int) opt.getOpt("n");
+        alpha = (double) opt.getOpt("alpha");
+        beta = (double) opt.getOpt("beta");
+        setOut_sx((int) opt.getOpt("in_sx"));
+        setOut_sy((int) opt.getOpt("in_sy"));
+        setOut_depth((int) opt.getOpt("in_depth"));
         setLayer_type("lrn");
         if (n % 2 == 0) {
             throw new IllegalStateException("Warning, n should be odd");

@@ -50,11 +50,11 @@ public class Options {
         return (f == null ? default_value : f);
     }
 
-    public Object get(String field) {
+    public Object getOpt(String field) {
         return opt.get(field);
     }
 
-    public Object get(String[] fields) {
+    public Object getOpt(String[] fields) {
         for (String field : fields) {
             Object f = opt.get(field);
             if (f != null) {
@@ -65,6 +65,6 @@ public class Options {
     }
 
 //    public static Object getOpt(Map<String, Object> opt, String field) {
-//        return opt.get(field);
+//        return opt.getOpt(field);
 //    }
 }

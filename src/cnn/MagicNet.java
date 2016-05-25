@@ -16,7 +16,7 @@ import java.util.Random;
  * @author dee
  */
 public class MagicNet {
-    
+
     private Vol[] data;
 //    private int[][] labels;
     private int[] labels;
@@ -25,7 +25,7 @@ public class MagicNet {
     private int num_candidates;
     private int num_epochs;
     private int ensemble_size;
-    
+
     private int batch_size_min;
     private int batch_size_max;
     private int l2_decay_min;
@@ -36,13 +36,13 @@ public class MagicNet {
     private double momentum_max;
     private int neurons_min;
     private int neurons_max;
-    
+
     private List<Options> folds;
     private List<Options> candidates;
     private List<Options> evaluated_candidates;
 //    private int[][] unique_labels;
     private int[] unique_labels;
-    
+
     private int iter = 0;
     private int foldix = 0;
 
@@ -54,13 +54,13 @@ public class MagicNet {
         this.data = data;
         this.labels = labels;
         train_ratio = (double) opt.getOpt("train_ratio", 0.7);
-        
+
         num_folds = (int) opt.getOpt("num_folds", 10);
         num_candidates = (int) opt.getOpt("num_candidates", 50);
-        
+
         num_epochs = (int) opt.getOpt("num_epochs", 50);
         ensemble_size = (int) opt.getOpt("ensemble_size", 10);
-        
+
         batch_size_min = (int) opt.getOpt("batch_size_min", 10);
         batch_size_max = (int) opt.getOpt("batch_size_max", 300);
         l2_decay_min = (int) opt.getOpt("l2_decay_min", -4);
@@ -71,7 +71,7 @@ public class MagicNet {
         momentum_max = (double) opt.getOpt("momentum_max", 0.9);
         neurons_min = (int) opt.getOpt("neurons_min", 5);
         neurons_max = (int) opt.getOpt("neurons_max", 30);
-        
+
         folds = new ArrayList();
         candidates = new ArrayList();
         evaluated_candidates = new ArrayList();
@@ -85,9 +85,9 @@ public class MagicNet {
             sampleFolds();
             sampleCandidates();
         }
-        
+
     }
-    
+
     public final void sampleFolds() {
         int N = data.length;
         int num_train = (int) Math.floor(train_ratio * N);
@@ -100,12 +100,12 @@ public class MagicNet {
             folds.add(opt);
         }
     }
-    
+
     public final Options sampleCandidate() {
         int input_depth = data[0].getW().length;
         int num_classes = unique_labels.length;
         Random r = new Random();
-        
+
         List<Options> layer_defs = new ArrayList();
         Options opt = new Options();
         opt.put("type", "input");
@@ -114,7 +114,7 @@ public class MagicNet {
         opt.put("out_depth", input_depth);
         layer_defs.add(opt);
         double nl = Utils.weightedSample(new double[]{0, 1, 2, 3}, new double[]{0.1, 0.3, 0.3, 0.2});
-        
+
         for (int q = 0; q < nl; q++) {
             int ni = Utils.randi(neurons_min, neurons_max);
             String[] act_title = {"tanh", "maxout", "relu"};
@@ -134,13 +134,13 @@ public class MagicNet {
                 layer_defs.add(opt);
             }
         }
-        
+
         opt.put("type", "softmax");
         opt.put("num_classes", num_classes);
         layer_defs.add(opt);
         Net net = new Net();
         net.makeLayers(layer_defs.toArray(new Options[layer_defs.size()]));
-        
+
         int bs = Utils.randi(batch_size_min, batch_size_max);
         double l2 = Math.pow(10, Utils.randf(l2_decay_min, l2_decay_max));
         double lr = Math.pow(10, Utils.randf(learning_rate_min, learning_rate_max));
@@ -163,7 +163,7 @@ public class MagicNet {
             trainer_def.put("l2_decay", l2);
         }
         Trainers trainer = new Trainers(net, opt);
-        
+
         Options candidate = new Options();
         candidate.put("acc", new ArrayList());
         candidate.put("accv", 0);
@@ -173,7 +173,7 @@ public class MagicNet {
         candidate.put("trainer", trainer);
         return candidate;
     }
-    
+
     public void sampleCandidates() {
         candidates = new ArrayList();
         for (int i = 0; i < num_candidates; i++) {
@@ -181,28 +181,28 @@ public class MagicNet {
             candidates.add(candidate);
         }
     }
-    
+
     public void step() {
         iter++;
         Options fold = folds.get(foldix);
-        int[] train_ix = (int[]) fold.get("train_ix");
+        int[] train_ix = (int[]) fold.getOpt("train_ix");
         int dataix = train_ix[Utils.randi(0, train_ix.length)];
         for (int k = 0; k < candidates.size(); k++) {
             Vol x = data[dataix];
             int[] l = {labels[dataix]};
             Options candidate = candidates.get(k);
-            Trainers trainer = (Trainers) candidate.get("trainer");
+            Trainers trainer = (Trainers) candidate.getOpt("trainer");
             trainer.train(x, l);
             candidate.put("trainer", trainer);
         }
-        
+
         double lastiter = num_epochs * train_ix.length;
         if (iter >= lastiter) {
             double[] val_acc = evalValErrors();
             for (int k = 0; k < candidates.size(); k++) {
                 Options c = candidates.get(k);
-                List acc = (ArrayList) c.get("acc");
-                double accv = (double) c.get("accv");
+                List acc = (ArrayList) c.getOpt("acc");
+                double accv = (double) c.getOpt("accv");
                 acc.add(val_acc[k]);
                 c.put("accv", accv + val_acc[k]);
             }
@@ -225,25 +225,24 @@ public class MagicNet {
                 for (int k = 0; k < candidates.size(); k++) {
                     Options c = candidates.get(k);
                     Net net = new Net();
-                    List<Options> layer_defs = (ArrayList) c.get("layer_defs");
+                    List<Options> layer_defs = (ArrayList) c.getOpt("layer_defs");
                     Options[] defs = layer_defs.toArray(new Options[layer_defs.size()]);
                     net.makeLayers(defs);
-                    Options trainer_def = (Options) c.get("trainer_def");
+                    Options trainer_def = (Options) c.getOpt("trainer_def");
                     Trainers trainer = new Trainers(net, trainer_def);
                     c.put("net", net);
                     c.put("trainer", trainer);
                 }
             }
-            
         }
     }
-    
+
     public double[] evalValErrors() {
         double[] vals = new double[candidates.size()];
         Options fold = folds.get(foldix);
-        int[] test_ix = (int[]) fold.get("test_ix");
+        int[] test_ix = (int[]) fold.getOpt("test_ix");
         for (int k = 0; k < candidates.size(); k++) {
-            Net net = (Net) candidates.get(k).get("net");
+            Net net = (Net) candidates.get(k).getOpt("net");
             double v = 0.0;
             for (int q = 0; q < test_ix.length; q++) {
                 Vol x = data[test_ix[q]];
@@ -258,15 +257,69 @@ public class MagicNet {
         }
         return vals;
     }
-    
+
+    public Vol predictSoft(Vol data) {
+        List<Options> eval_candidates = null;
+        int nv = 0;
+        if (evaluated_candidates.isEmpty()) {
+            nv = candidates.size();
+            eval_candidates = candidates;
+        } else {
+            nv = Math.min(ensemble_size, evaluated_candidates.size());
+            eval_candidates = evaluated_candidates;
+        }
+
+        int n = 0;
+        Vol xout = null;
+        for (int j = 0; j < nv; j++) {
+            Net net = (Net) eval_candidates.get(j).getOpt("net");
+            Vol x = net.forward(data);
+            if (j == 0) {
+                xout = x;
+                n = x.getW().length;
+            } else {
+                for (int d = 0; d < n; d++) {
+                    double newd = xout.getW(d) + x.getW(d);
+                    xout.setW(d, newd);
+                }
+            }
+        }
+        for (int d = 0; d < n; d++) {
+            double newd = xout.getW(d) / nv;
+            xout.setW(d, newd);
+        }
+        return xout;
+    }
+
+    public int predict(Vol data) {
+        Vol xout = predictSoft(data);
+        int predicted_label = -1;
+        if (xout.getW().length != 0) {
+            Options stats = Utils.maxmin(xout.getW());
+            predicted_label = (int) stats.getOpt("maxi");
+        }
+        return predicted_label;
+    }
+
+    public Options toJSON() {
+        double nv = Math.min(ensemble_size, evaluated_candidates.size());
+        Options opt = new Options();
+        List<Options> nets = new ArrayList();
+        for (int i = 0; i < nv; i++) {
+            Net net = (Net) evaluated_candidates.get(i).getOpt("net");
+            nets.add(net.toJSON());
+        }
+        return opt;
+    }
+
     private static class CandidateComparator implements Comparator<Options> {
-        
+
         @Override
         public int compare(Options a, Options b) {
-            double a_accv = (double) a.get("accv");
-            double[] a_acc = (double[]) a.get("acc");
-            double b_accv = (double) b.get("accv");
-            double[] b_acc = (double[]) b.get("acc");
+            double a_accv = (double) a.getOpt("accv");
+            double[] a_acc = (double[]) a.getOpt("acc");
+            double b_accv = (double) b.getOpt("accv");
+            double[] b_acc = (double[]) b.getOpt("acc");
             return (a_accv / a_acc.length) > (b_accv / b_acc.length) ? -1 : 1;
         }
     }

@@ -13,7 +13,7 @@ public class TanhLayer extends LayerNonLinear {
 
     public TanhLayer(Options opt) {
         super(opt);
-        setOut_depth((int) opt.get("in_depth"));
+        setOut_depth((int) opt.getOpt("in_depth"));
         setLayer_type("tanh");
     }
 
