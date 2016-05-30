@@ -26,18 +26,19 @@ public class Net {
         defs = desugar(defs);
 
         layers = new ArrayList();
-        System.out.println("Length def = "+defs.length);
+        System.out.println("Length def = " + defs.length);
         for (int i = 0; i < defs.length; i++) {
             System.out.println("make layer " + i);
-            System.out.println("++++++++++++++++++++++++");
             Options def = defs[i];
             if (i > 0) {
                 LayerInput prev = layers.get(i - 1);
-                def.put("in_sx", prev.getOut_sx());
-                def.put("in_sy", prev.getOut_sy());
-                def.put("in_depth", prev.getOut_depth());
+                def.put("in_sx", prev.out_sx);
+                def.put("in_sy", prev.out_sy);
+                def.put("in_depth", prev.out_depth);
             }
             String type = (String) def.getOpt("type");
+            System.out.println("layer type = " + type);
+            System.out.println("++++++++++++++++++++++++");
             switch (type) {
                 case "fc":
                     layers.add(new FullyConnLayer(def));
@@ -55,7 +56,7 @@ public class Net {
                     layers.add(new SoftmaxLayer(def));
                     break;
                 case "regression":
-                    layers.add(new Regressionlayer(def));
+                    layers.add(new RegressionLayer(def));
                     break;
                 case "conv":
                     layers.add(new ConvLayer(def));
@@ -125,7 +126,49 @@ public class Net {
     public List<Options> getParamsAndGrads() {
         List<Options> response = new ArrayList();
         for (LayerInput layer : layers) {
-            List<Options> layer_responses = layer.getParamsAndGrads();
+            List<Options> layer_responses = new ArrayList();
+
+            if (layer instanceof ConvLayer) {
+                System.out.println("conv");
+                layer_responses = ((ConvLayer) layer).getParamsAndGrads();
+            } else if (layer instanceof DropoutLayer) {
+                System.out.println("drop");
+                layer_responses = ((DropoutLayer) layer).getParamsAndGrads();
+            } else if (layer instanceof FullyConnLayer) {
+                System.out.println("full");
+                layer_responses = ((FullyConnLayer) layer).getParamsAndGrads();
+            } else if (layer instanceof MaxOutLayer) {
+                System.out.println("max");
+                layer_responses = ((MaxOutLayer) layer).getParamsAndGrads();
+            } else if (layer instanceof NormalizationLayer) {
+                System.out.println("norm");
+                layer_responses = ((NormalizationLayer) layer).getParamsAndGrads();
+            } else if (layer instanceof PoolLayer) {
+                System.out.println("pool");
+                layer_responses = ((PoolLayer) layer).getParamsAndGrads();
+            } else if (layer instanceof RegressionLayer) {
+                System.out.println("reg");
+                layer_responses = ((RegressionLayer) layer).getParamsAndGrads();
+            } else if (layer instanceof ReluLayer) {
+                System.out.println("rel");
+                layer_responses = ((ReluLayer) layer).getParamsAndGrads();
+            } else if (layer instanceof SVMLayer) {
+                System.out.println("svm");
+                layer_responses = ((SVMLayer) layer).getParamsAndGrads();
+            } else if (layer instanceof SigmoidLayer) {
+                System.out.println("sig");
+                layer_responses = ((SigmoidLayer) layer).getParamsAndGrads();
+            } else if (layer instanceof SoftmaxLayer) {
+                System.out.println("soft");
+                layer_responses = ((SoftmaxLayer) layer).getParamsAndGrads();
+            } else if (layer instanceof TanhLayer) {
+                System.out.println("tanh");
+                layer_responses = ((TanhLayer) layer).getParamsAndGrads();
+            } else {
+                System.out.println("input");
+                layer_responses = layer.getParamsAndGrads();
+            }
+//            List<Options> layer_responses = layer.getParamsAndGrads();                      
             for (Options layer_response : layer_responses) {
                 response.add(layer_response);
             }
@@ -135,8 +178,8 @@ public class Net {
 
     public int getPrediction() {
         LayerInput S = layers.get(layers.size() - 1);
-        Utils.asserts(S.getLayer_type().equals("softmax"), "use softmax for getPrediction function");
-        double[] p = S.getOut_act().getW();
+        Utils.asserts(S.layer_type.equals("softmax"), "use softmax for getPrediction function");
+        double[] p = S.out_act.w;
         double maxv = p[0];
         int maxi = 0;
         for (int i = 1; i < p.length; i++) {
@@ -162,10 +205,20 @@ public class Net {
         List<Options> new_defs = new ArrayList();
         for (int i = 0; i < defs.length; i++) {
             Options def = defs[i];
-            if (def.getOpt("type").equals("softmax") || def.getOpt("type").equals("svm")) {
+            System.out.println("desugar----");
+            System.out.println(def);
+            System.out.println("---");
+            if (def.getOpt("type").equals("softmax")) {
                 Options opt = new Options();
                 opt.put("type", "fc");
-                opt.put("num_neurons", def.getOpt("num_classes"));
+                opt.put("num_neurons", def.getOpt("num_neurons"));
+                new_defs.add(opt);
+
+            }
+            if (def.getOpt("type").equals("svm")) {
+                Options opt = new Options();
+                opt.put("type", "fc");
+                opt.put("num_neurons", def.getOpt("num_neurons"));
                 new_defs.add(opt);
             }
             if (def.getOpt("type").equals("regression")) {
@@ -215,6 +268,11 @@ public class Net {
                 }
             }
         }
+        System.out.println("desugar results : ");
+        for (Options new_def : new_defs) {
+            System.out.println(new_def);
+        }
+        System.out.println("========================");
         return new_defs.toArray(new Options[new_defs.size()]);
     }
 

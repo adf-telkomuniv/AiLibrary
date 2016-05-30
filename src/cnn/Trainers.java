@@ -46,7 +46,7 @@ public class Trainers {
         beta2 = (double) opt.getOpt("beta2", 0.95);
 
         k = 0;
-        if (this.net.getLayer(this.net.getLayers().size() - 1).getLayer_type().equals("regression")) {
+        if (this.net.getLayer(this.net.getLayers().size() - 1).layer_type.equals("regression")) {
             regression = true;
         } else {
             regression = false;
@@ -136,14 +136,12 @@ public class Trainers {
                         gsumi[j] = gsumi[j] * momentum + learning_rate * gij;
                         dx = momentum * dx - (1.0 + momentum) * gsumi[j];
                         p[j] += dx;
+                    } else if (momentum > 0.0) {
+                        double dx = momentum * gsumi[j] - learning_rate * gij;
+                        gsumi[j] = dx;
+                        p[j] += dx;
                     } else {
-                        if (momentum > 0.0) {
-                            double dx = momentum * gsumi[j] - learning_rate * gij;
-                            gsumi[j] = dx;
-                            p[j] += dx;
-                        } else {
-                            p[j] += -learning_rate * gij;
-                        }
+                        p[j] += -learning_rate * gij;
                     }
                     g[j] = 0.0;
                 }

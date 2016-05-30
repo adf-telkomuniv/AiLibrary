@@ -47,7 +47,7 @@ public class Testing {
         Vol x = new Vol(sx, 0);
         Vol prob = net.forward(x);
 
-        System.out.println("probability x is class 0 = " + prob.getW(0));
+        System.out.println("probability x is class 0 = " + prob.w[0]);
 
         Options opt = new Options();
         opt.put("learning_rate", 0.01);
@@ -57,7 +57,7 @@ public class Testing {
         double[] y = {0};
         trainer.train(x, y);
         Vol prob2 = net.forward(x);
-        System.out.println("probability x is class 0 = " + prob2.getW(0));
+        System.out.println("probability x is class 0 = " + prob2.w[0]);
 
     }
 

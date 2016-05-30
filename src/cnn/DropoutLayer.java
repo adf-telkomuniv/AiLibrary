@@ -13,28 +13,36 @@ import java.util.Random;
  */
 public class DropoutLayer extends LayerInput {
 
-    private double drop_prob;
-    private boolean[] dropped;
+    double drop_prob;
+    boolean[] dropped;
 
     public DropoutLayer(Options opt) {
-//        super(vol, opt);
         super(opt);
-        setLayer_type("dropout");
+        out_sx = (int) opt.getOpt("in_sx");
+        out_sy = (int) opt.getOpt("in_sy");
+        out_depth = (int) opt.getOpt("in_depth");
+        layer_type = "dropout";
         drop_prob = (double) opt.getOpt("drop_prob", 0.5);
-        dropped = new boolean[getOut_sx() * getOut_sy() * getOut_depth()];
+        dropped = new boolean[out_sx * out_sy * out_depth];
 
     }
 
+    /**
+     *
+     * @param V
+     * @param is_training default false
+     * @return
+     */
     @Override
     public Vol forward(Vol V, boolean is_training) {
-        setIn_act(V);
+        in_act = V;
         Vol V2 = V.clone();
-        int N = V.getW().length;
+        int N = V.w.length;
         if (is_training) {
             Random r = new Random();
             for (int i = 0; i < N; i++) {
                 if (r.nextDouble() < drop_prob) {
-                    V2.setW(i, 0);
+                    V2.w[i] = 0;
                     dropped[i] = true;
                 } else {
                     dropped[i] = false;
@@ -42,22 +50,22 @@ public class DropoutLayer extends LayerInput {
             }
         } else {
             for (int i = 0; i < N; i++) {
-                V2.setW(i, V2.getW(i) * drop_prob);
+                V2.w[i] *= drop_prob;
             }
         }
-        setOut_act(V2);
-        return getOut_act();
+        out_act = V2;
+        return out_act;
     }
 
     @Override
     public void backward() {
-        Vol V = getIn_act();
-        Vol chain_grad = getOut_act();
-        int N = V.getW().length;
-        V.setDw(new double[N]);
+        Vol V = in_act;
+        Vol chain_grad = out_act;
+        int N = V.w.length;
+        V.dw = new double[N];
         for (int i = 0; i < N; i++) {
             if (!(dropped[i])) {
-                V.setDw(i, chain_grad.getDw(i));
+                V.dw[i] = chain_grad.dw[i];
             }
         }
     }

@@ -5,15 +5,13 @@
  */
 package cnn;
 
-import java.util.Map;
-
 /**
  *
  * @author dee
  */
 public class LayerLoss extends LayerInput {
 
-    private int num_inputs;
+    int num_inputs;
 
     public LayerLoss(Options opt) {
         super(opt);
@@ -21,19 +19,9 @@ public class LayerLoss extends LayerInput {
         int in_sy = (int) opt.getOpt("in_sy");
         int in_depth = (int) opt.getOpt("in_depth");
         num_inputs = in_sx * in_sy * in_depth;
-        setOut_sx(1);
-        setOut_sy(1);
+        out_sx = (1);
+        out_sy = (1);
+        out_depth = num_inputs;
     }
 
-//    public LayerLoss(Vol vol, int out_sx, int out_sy, int out_depth) {
-//        super(vol, out_sx, out_sy, out_depth);
-//        num_inputs = out_sx * out_sy * out_depth;
-//    }
-    public int getNum_inputs() {
-        return num_inputs;
-    }
-
-    public void setNum_inputs(int num_inputs) {
-        this.num_inputs = num_inputs;
-    }
 }

@@ -5,8 +5,6 @@
  */
 package cnn;
 
-import java.util.Random;
-
 /**
  *
  * @author dee
@@ -23,7 +21,6 @@ public class PoolLayer extends LayerInput {
     private int[] switchx, switchy;
 
     public PoolLayer(Options opt) {
-//        super(vol, opt);
         super(opt);
         sx = (int) opt.getOpt("sx");
         in_sx = (int) opt.getOpt("in_sx");
@@ -33,26 +30,26 @@ public class PoolLayer extends LayerInput {
         stride = (int) opt.getOpt("stride", 2);
         pad = (int) opt.getOpt("pad", 2);
 
-        setOut_depth(in_depth);
-        setOut_sx(Math.floorDiv(in_sx + pad * 2 - sx, stride + 1));
-        setOut_sy(Math.floorDiv(in_sy + pad * 2 - sy, stride + 1));
-        setLayer_type("pool");
-        switchx = new int[getOut_sx() * getOut_sy() * getOut_depth()];
-        switchy = new int[getOut_sx() * getOut_sy() * getOut_depth()];
+        out_depth = (in_depth);
+        out_sx = (Math.floorDiv(in_sx + pad * 2 - sx, stride + 1));
+        out_sy = (Math.floorDiv(in_sy + pad * 2 - sy, stride + 1));
+        layer_type = ("pool");
+        switchx = new int[out_sx * out_sy * out_depth];
+        switchy = new int[out_sx * out_sy * out_depth];
 
     }
 
     @Override
     public Vol forward(Vol V, boolean is_training) {
-        setIn_act(V);
-        Vol A = new Vol(getOut_sx(), getOut_sy(), getOut_depth(), 0);
+        in_act = (V);
+        Vol A = new Vol(out_sx, out_sy, out_depth, 0);
         int n = 0;
-        for (int d = 0; d < getOut_depth(); d++) {
+        for (int d = 0; d < out_depth; d++) {
             int x = -pad;
             int y = -pad;
-            for (int ax = 0; ax < getOut_sx(); x += stride, ax++) {
+            for (int ax = 0; ax < out_sx; x += stride, ax++) {
                 y = -pad;
-                for (int ay = 0; ay < getOut_sy(); y += stride, ay++) {
+                for (int ay = 0; ay < out_sy; y += stride, ay++) {
                     double a = Integer.MIN_VALUE;
                     int winx = -1;
                     int winy = -1;
@@ -60,7 +57,7 @@ public class PoolLayer extends LayerInput {
                         for (int fy = 0; fy < sy; fy++) {
                             int oy = y + fy;
                             int ox = x + fx;
-                            if (oy >= 0 && oy < V.getSy() && ox >= 0 && ox < V.getSx()) {
+                            if (oy >= 0 && oy < V.sy && ox >= 0 && ox < V.sx) {
                                 double v = V.get(ox, oy, d);
                                 if (v > a) {
                                     a = v;
@@ -77,23 +74,23 @@ public class PoolLayer extends LayerInput {
                 }
             }
         }
-        setOut_act(A);
-        return getOut_act();
+        out_act = (A);
+        return out_act;
     }
 
     @Override
     public void backward() {
-        Vol V = getIn_act();
-        V.setDw(new double[V.getW().length]);
-        Vol A = getOut_act();
+        Vol V = in_act;
+        V.dw = (new double[V.w.length]);
+        Vol A = out_act;
         int n = 0;
-        for (int d = 0; d < getOut_depth(); d++) {
+        for (int d = 0; d < out_depth; d++) {
             int x = -pad;
             int y = -pad;
-            for (int ax = 0; ax < getOut_sx(); x += stride, ax++) {
+            for (int ax = 0; ax < out_sx; x += stride, ax++) {
                 y = -pad;
-                for (int ay = 0; ay < getOut_sy(); y += stride, ay++) {
-                    double chain_grad = getOut_act().get_grad(ax, ay, d);
+                for (int ay = 0; ay < out_sy; y += stride, ay++) {
+                    double chain_grad = out_act.get_grad(ax, ay, d);
                     V.add_grad(switchx[n], switchy[n], d, chain_grad);
                     n++;
                 }

@@ -14,18 +14,18 @@ public class VolUtils {
     //utilities
     public Vol augment(Vol V, int crop, Options opt) {
         boolean fliplr = (boolean) opt.getOpt("fliplr", false);
-        int dx = (int) opt.getOpt("dx", Utils.randi(0, V.getSx() - crop));
-        int dy = (int) opt.getOpt("dy", Utils.randi(0, V.getSy() - crop));
+        int dx = (int) opt.getOpt("dx", Utils.randi(0, V.sx - crop));
+        int dy = (int) opt.getOpt("dy", Utils.randi(0, V.sy - crop));
 
         Vol W;
-        if (crop != V.getSx() || dx != 0 || dy != 0) {
-            W = new Vol(crop, crop, V.getDepth(), 0);
+        if (crop != V.sx || dx != 0 || dy != 0) {
+            W = new Vol(crop, crop, V.depth, 0);
             for (int x = 0; x < crop; x++) {
                 for (int y = 0; y < crop; y++) {
-                    if (x + dx < 0 || x + dx >= V.getSx() || y + dy < 0 || y + dy >= V.getSy()) {
+                    if (x + dx < 0 || x + dx >= V.sx || y + dy < 0 || y + dy >= V.sy) {
                         continue;
                     }
-                    for (int d = 0; d < V.getDepth(); d++) {
+                    for (int d = 0; d < V.depth; d++) {
                         W.set(x, y, d, V.get(x + dx, y + dy, d));
                     }
                 }
@@ -36,10 +36,10 @@ public class VolUtils {
 
         if (fliplr) {
             Vol W2 = W.cloneAndZero();
-            for (int x = 0; x < W.getSx(); x++) {
-                for (int y = 0; y < W.getSy(); y++) {
-                    for (int d = 0; d < W.getDepth(); d++) {
-                        W2.set(x, y, d, W.get(W.getSx() - x - 1, y, d));
+            for (int x = 0; x < W.sx; x++) {
+                for (int y = 0; y < W.sy; y++) {
+                    for (int d = 0; d < W.depth; d++) {
+                        W2.set(x, y, d, W.get(W.sx - x - 1, y, d));
                     }
                 }
             }
@@ -63,7 +63,7 @@ public class VolUtils {
             }
         }
         Vol x = new Vol(W, H, 4, 0.0);
-        x.setW(pv);
+        x.w = (pv);
         if (convert_grayscale) {
             Vol x1 = new Vol(W, H, 1, 0.0);
             for (int i = 0; i < W; i++) {

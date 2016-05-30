@@ -5,33 +5,33 @@
  */
 package cnn;
 
-import java.util.Map;
-
 /**
  *
  * @author dee
  */
-public class Regressionlayer extends LayerLoss {
+public class RegressionLayer extends LayerLoss {
 
-    public Regressionlayer(Options opt) {
+    public RegressionLayer(Options opt) {
         super(opt);
-        setLayer_type("regression");
+        layer_type = ("regression");
+        out_depth = num_inputs;
+
     }
 
-//    public Regressionlayer(Vol vol, int out_sx, int out_sy, int out_depth) {
+//    public RegressionLayer(Vol vol, int out_sx, int out_sy, int out_depth) {
 //        super(vol, out_sx, out_sy, out_depth);
 //        setLayer_type("regression");
 //    }
     @Override
     public Vol forward(Vol V, boolean is_training) {
-        setIn_act(V);
-        setOut_act(V);
+        in_act = (V);
+        out_act = (V);
         return V;
     }
 
 //    public double backward(int y) {
 //        Vol x = getIn_act();
-//        x.setDw(new double[x.getW().length]);
+//        x.setDw(new double[x.w.length]);
 //        double loss = 0;
 //        double dy = x.getW(0) - y;
 //        x.setDw(0, dy);
@@ -40,7 +40,7 @@ public class Regressionlayer extends LayerLoss {
 //    }
 //    public double backward(int i, double yi) {
 //        Vol x = getIn_act();
-//        x.setDw(new double[x.getW().length]);
+//        x.setDw(new double[x.w.length]);
 //        double loss = 0;
 //        double dy = x.getW(i) - yi;
 //        x.setDw(i, dy);
@@ -49,21 +49,20 @@ public class Regressionlayer extends LayerLoss {
 //    }
     @Override
     public double backward(double[] y) {
+        Vol x = in_act;
+        x.dw = (new double[x.w.length]);
+        double loss = 0.0;
+
         if (y.length == 1) {
-            Vol x = getIn_act();
-            x.setDw(new double[x.getW().length]);
-            double loss = 0;
-            double dy = x.getW(0) - y[0];
-            x.setDw(0, dy);
+            double dy = x.w[0] - y[0];
+            x.dw[0] = dy;
             loss += 0.5 * dy * dy;
             return loss;
         } else {
-            Vol x = getIn_act();
-            x.setDw(new double[x.getW().length]);
-            double loss = 0;
-            for (int i = 0; i < getOut_depth(); i++) {
-                double dy = x.getW(i) - y[i];
-                x.setDw(i, dy);
+
+            for (int i = 0; i < out_depth; i++) {
+                double dy = x.w[i] - y[i];
+                x.dw[i] = dy;
                 loss += 0.5 * dy * dy;
             }
             return loss;
@@ -73,7 +72,7 @@ public class Regressionlayer extends LayerLoss {
     @Override
     public Options toJSON() {
         Options opt = super.toJSON();
-        opt.put("num_inputs", getNum_inputs());
+        opt.put("num_inputs", num_inputs);
         return opt;
     }
 }

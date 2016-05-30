@@ -14,8 +14,10 @@ import java.util.List;
  */
 public class FullyConnLayer extends LayerDotProducts {
 
-    private int num_inputs;
-    private double bias;
+    int num_inputs;
+    int in_depth;
+    int in_sx;
+    int in_sy;
 
     public FullyConnLayer(Options opt) {
         super(opt);
@@ -29,88 +31,80 @@ public class FullyConnLayer extends LayerDotProducts {
 //        System.out.println("b = " + b1 + " " + b2);
 //        setOut_depth((int) opt.getOpt(new String[]{"num_neurons", "filters"}));
 
-        int out_depth;
         if (opt.getOpt("num_neurons") != null) {
             out_depth = (int) opt.getOpt("num_neurons", 0);
         } else {
             out_depth = (int) opt.getOpt("filters", 0);
         }
         System.out.println("out = " + out_depth);
-        setOut_depth(out_depth);
 
-        int in_depth = (int) opt.getOpt("in_depth");
-        int in_sx = (int) opt.getOpt("in_sx");
-        int in_sy = (int) opt.getOpt("in_sy");
+        in_depth = (int) opt.getOpt("in_depth");
+        in_sx = (int) opt.getOpt("in_sx");
+        in_sy = (int) opt.getOpt("in_sy");
         num_inputs = in_sx * in_sy * in_depth;
-        setOut_sx(1);
-        setOut_sy(1);
-        setLayer_type("fc");
+        out_sx = 1;
+        out_sy = 1;
+        layer_type = "fc";
+
         bias = (double) opt.getOpt("bias_pref", 0.0);
         System.out.println("bias fully = " + bias);
-        setFilters(new Vol[getOut_depth()]);
-        for (int i = 0; i < getOut_depth(); i++) {
-            setFilters(i, new Vol(1, 1, num_inputs, 0));
-        }
-        setBiases(new Vol(1, 1, getOut_depth(), bias));
-    }
 
-    @Override
-    public void backward() {
-        Vol V = getIn_act();
-        V.setDw(new double[V.getW().length]);
-        for (int i = 0; i < getOut_depth(); i++) {
-            Vol tfi = getFilters(i);
-            double chain_grad = getOut_act().getDw(i);
-            for (int d = 0; d < num_inputs; d++) {
-                V.setDw(d, V.getDw(d) + (tfi.getW(d) * chain_grad));
-                tfi.setDw(d, tfi.getDw(d) + (V.getW(d) * chain_grad));
-            }
-            getBiases().setDw(i, getBiases().getDw(i) + chain_grad);
+        filters = new Vol[out_depth];
+        for (int i = 0; i < out_depth; i++) {
+            filters[i] = new Vol(1, 1, num_inputs, 0);
         }
+        biases = new Vol(1, 1, out_depth, bias);
     }
 
     @Override
     public Vol forward(Vol V, boolean is_training) {
-        setIn_act(V);
-        Vol A = new Vol(1, 1, getOut_depth(), 0);
-        double[] Vw = V.getW();
-        for (int i = 0; i < getOut_depth(); i++) {
-            double a = 0;
-            double[] wi = getFilters(i).getW();
+        in_act = V;
+        Vol A = new Vol(1, 1, out_depth, 0);
+        double[] Vw = V.w;
+        for (int i = 0; i < out_depth; i++) {
+            double a = 0.0;
+            double[] wi = filters[i].w;
             for (int d = 0; d < num_inputs; d++) {
                 a += Vw[d] * wi[d];
             }
-            a += getBiases().getW(i);
-            A.setW(i, a);
+            a += biases.w[i];
+            A.w[i] = a;
         }
-        setOut_act(A);
-        return getOut_act();
+        out_act = A;
+        return out_act;
     }
 
-    public int getNum_inputs() {
-        return num_inputs;
-    }
-
-    public void setNum_inputs(int num_inputs) {
-        this.num_inputs = num_inputs;
+    @Override
+    public void backward() {
+        Vol V = in_act;
+        V.dw = new double[V.w.length];
+        for (int i = 0; i < out_depth; i++) {
+            Vol tfi = filters[i];
+            double chain_grad = out_act.dw[i];
+            for (int d = 0; d < num_inputs; d++) {
+                V.dw[d] += tfi.w[d] * chain_grad;
+                tfi.dw[d] += V.w[d] * chain_grad;
+            }
+            biases.dw[i] += chain_grad;
+        }
     }
 
     @Override
     public List<Options> getParamsAndGrads() {
         List<Options> response = new ArrayList();
-        for (int i = 0; i < getOut_depth(); i++) {
+        for (int i = 0; i < out_depth; i++) {
             Options opt = new Options();
-            opt.put("params", getFilters(i).getW());
-            opt.put("grads", getFilters(i).getDw());
-            opt.put("l1_decay_mul", getL1_decay_mul());
-            opt.put("l2_decay_mul", getL2_decay_mul());
+            opt.put("params", filters[i].w);
+            opt.put("grads", filters[i].dw);
+            opt.put("l1_decay_mul", l1_decay_mul);
+            opt.put("l2_decay_mul", l2_decay_mul);
             response.add(opt);
         }
         Options opt = new Options();
-        opt.put("params", biases.getW());
-        opt.put("grads", biases.getDw());
-        opt.put("l1_decay_mul", 0);
-        opt.put("l2_decay_mul", 0);
+        opt.put("params", biases.w);
+        opt.put("grads", biases.dw);
+        opt.put("l1_decay_mul", 0.0);
+        opt.put("l2_decay_mul", 0.0);
         response.add(opt);
         return response;
     }
@@ -119,9 +113,9 @@ public class FullyConnLayer extends LayerDotProducts {
     public Options toJSON() {
         Options opt = super.toJSON();
         opt.put("num_inputs", num_inputs);
-        opt.put("l1_decay_mul", getL1_decay_mul());
-        opt.put("l2_decay_mul", getL2_decay_mul());
-        opt.put("filters", getFilters());
+        opt.put("l1_decay_mul", l1_decay_mul);
+        opt.put("l2_decay_mul", l2_decay_mul);
+        opt.put("filters", filters);
         //loop filters
         opt.put("biases", biases);
         return opt;

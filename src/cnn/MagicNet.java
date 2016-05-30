@@ -19,7 +19,6 @@ public class MagicNet {
 
     private Vol[] data;
     private double[] labels;
-//    private int[] labels;
     private double train_ratio;
     private int num_folds;
     private int num_candidates;
@@ -79,8 +78,6 @@ public class MagicNet {
         iter = 0;
         foldix = 0;
 
-//        finish_fold_callback = null;
-//        finish_batch_callback = null;
         if (data.length > 0) {
             sampleFolds();
             sampleCandidates();
@@ -102,7 +99,7 @@ public class MagicNet {
     }
 
     public final Options sampleCandidate() {
-        int input_depth = data[0].getW().length;
+        int input_depth = data[0].w.length;
         int num_classes = unique_labels.length;
         Random r = new Random();
 
@@ -259,8 +256,8 @@ public class MagicNet {
     }
 
     public Vol predictSoft(Vol data) {
-        List<Options> eval_candidates = null;
-        int nv = 0;
+        List<Options> eval_candidates;
+        int nv;
         if (evaluated_candidates.isEmpty()) {
             nv = candidates.size();
             eval_candidates = candidates;
@@ -276,17 +273,17 @@ public class MagicNet {
             Vol x = net.forward(data);
             if (j == 0) {
                 xout = x;
-                n = x.getW().length;
+                n = x.w.length;
             } else {
                 for (int d = 0; d < n; d++) {
-                    double newd = xout.getW(d) + x.getW(d);
-                    xout.setW(d, newd);
+                    double newd = xout.w[d] + x.w[d];
+                    xout.w[d] = newd;
                 }
             }
         }
         for (int d = 0; d < n; d++) {
-            double newd = xout.getW(d) / nv;
-            xout.setW(d, newd);
+            double newd = xout.w[d] / nv;
+            xout.w[d] = newd;
         }
         return xout;
     }
@@ -294,8 +291,8 @@ public class MagicNet {
     public double predict(Vol data) {
         Vol xout = predictSoft(data);
         double predicted_label = -1;
-        if (xout.getW().length != 0) {
-            Options stats = Utils.maxmin(xout.getW());
+        if (xout.w.length != 0) {
+            Options stats = Utils.maxmin(xout.w);
             predicted_label = (int) stats.getOpt("maxi");
         }
         return predicted_label;
