@@ -19,7 +19,15 @@ public class Vol {
     private double[] w, dw;
     private int n;
 
+    /**
+     *
+     * @param sx
+     * @param sy
+     * @param depth
+     * @param c default set 0
+     */
     public Vol(int sx, int sy, int depth, double c) {
+        System.out.println(sx + ", " + sy + ", " + depth + ", " + c);
         this.sx = sx;
         this.sy = sy;
         this.depth = depth;
@@ -42,7 +50,12 @@ public class Vol {
         }
     }
 
-    public Vol(int[] sx, int[] sy, int depth, double c) {
+    /**
+     *
+     * @param sx
+     * @param c default = 0
+     */
+    public Vol(double[] sx, double c) {
         this.sx = 1;
         this.sy = 1;
         this.depth = sx.length;

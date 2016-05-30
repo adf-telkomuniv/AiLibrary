@@ -19,8 +19,8 @@ public class Options {
     public Options() {
         opt = new HashMap();
     }
-    
-    public int size(){
+
+    public int size() {
         return opt.size();
     }
 
@@ -28,18 +28,17 @@ public class Options {
         opt.put(fielad_name, value);
     }
 
-    public Object getOpt(String[] field_name, Object default_value) {
-        Object ret = default_value;
-        for (String field : field_name) {
-            Object f = opt.get(field);
-            if (f != null) {
-//                ret = f;
-                return f;
-            }
-        }
-        return ret;
-    }
-
+//    public Object getOpt(String[] field_name, Object default_value) {
+//        Object ret = default_value;
+//        for (String field : field_name) {
+//            Object f = opt.get(field);
+//            if (f != null) {
+////                ret = f;
+//                return f;
+//            }
+//        }
+//        return ret;
+//    }
     public boolean find(String field) {
         Object f = opt.get(field);
         return f != null;
@@ -62,6 +61,14 @@ public class Options {
             }
         }
         return null;
+    }
+
+    public String toString() {
+        String s = "";
+        for (Map.Entry<String, Object> entry : opt.entrySet()) {
+            s += entry.getKey() + "/" + entry.getValue() + "\n";
+        }
+        return s;
     }
 
 //    public static Object getOpt(Map<String, Object> opt, String field) {

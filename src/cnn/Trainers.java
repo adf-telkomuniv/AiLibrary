@@ -55,7 +55,7 @@ public class Trainers {
         xsum = new ArrayList();
     }
 
-    public Options train(Vol x, int[] y) {
+    public Options train(Vol x, double[] y) {
         Date start = new Date();
         net.forward(x, true);
         Date end = new Date();
@@ -161,7 +161,6 @@ public class Trainers {
         return options;
     }
 
-    
 //    public Options train(Vol x, int[] y) {
 //        Date start = new Date();
 //        net.forward(x, true);
@@ -267,5 +266,4 @@ public class Trainers {
 //        options.put("loss", cost_loss + l1_decay_loss + l2_decay_loss);
 //        return options;
 //    }
-    
 }

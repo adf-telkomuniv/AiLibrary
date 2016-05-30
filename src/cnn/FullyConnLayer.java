@@ -15,10 +15,29 @@ import java.util.List;
 public class FullyConnLayer extends LayerDotProducts {
 
     private int num_inputs;
+    private double bias;
 
-    public FullyConnLayer( Options opt) {
-        super( opt);
-        setOut_depth((int) opt.getOpt(new String[]{"num_neurons", "filters"}));
+    public FullyConnLayer(Options opt) {
+        super(opt);
+        System.out.println("------------------------");
+        System.out.println(opt);
+//        int b1 = (int) opt.getOpt("num_neurons");
+//        System.out.println("b1 = " + b1);
+//        int b2 = (int) opt.getOpt("filters");
+//        int a = (int) opt.getOpt(new String[]{"num_neurons", "filters"});
+////        System.out.println("a = "+a);
+//        System.out.println("b = " + b1 + " " + b2);
+//        setOut_depth((int) opt.getOpt(new String[]{"num_neurons", "filters"}));
+
+        int out_depth;
+        if (opt.getOpt("num_neurons") != null) {
+            out_depth = (int) opt.getOpt("num_neurons", 0);
+        } else {
+            out_depth = (int) opt.getOpt("filters", 0);
+        }
+        System.out.println("out = " + out_depth);
+        setOut_depth(out_depth);
+
         int in_depth = (int) opt.getOpt("in_depth");
         int in_sx = (int) opt.getOpt("in_sx");
         int in_sy = (int) opt.getOpt("in_sy");
@@ -26,10 +45,13 @@ public class FullyConnLayer extends LayerDotProducts {
         setOut_sx(1);
         setOut_sy(1);
         setLayer_type("fc");
+        bias = (double) opt.getOpt("bias_pref", 0.0);
+        System.out.println("bias fully = " + bias);
         setFilters(new Vol[getOut_depth()]);
         for (int i = 0; i < getOut_depth(); i++) {
             setFilters(i, new Vol(1, 1, num_inputs, 0));
         }
+        setBiases(new Vol(1, 1, getOut_depth(), bias));
     }
 
     @Override
@@ -92,8 +114,8 @@ public class FullyConnLayer extends LayerDotProducts {
         response.add(opt);
         return response;
     }
-    
-     @Override
+
+    @Override
     public Options toJSON() {
         Options opt = super.toJSON();
         opt.put("num_inputs", num_inputs);

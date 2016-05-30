@@ -18,8 +18,8 @@ import java.util.Random;
 public class MagicNet {
 
     private Vol[] data;
-//    private int[][] labels;
-    private int[] labels;
+    private double[] labels;
+//    private int[] labels;
     private double train_ratio;
     private int num_folds;
     private int num_candidates;
@@ -41,13 +41,13 @@ public class MagicNet {
     private List<Options> candidates;
     private List<Options> evaluated_candidates;
 //    private int[][] unique_labels;
-    private int[] unique_labels;
+    private double[] unique_labels;
 
     private int iter = 0;
     private int foldix = 0;
 
 //    public MagicNet(Vol[] data, int[][] labels, Options opt) {
-    public MagicNet(Vol[] data, int[] labels, Options opt) {
+    public MagicNet(Vol[] data, double[] labels, Options opt) {
         if (opt == null) {
             opt = new Options();
         }
@@ -189,7 +189,7 @@ public class MagicNet {
         int dataix = train_ix[Utils.randi(0, train_ix.length)];
         for (int k = 0; k < candidates.size(); k++) {
             Vol x = data[dataix];
-            int[] l = {labels[dataix]};
+            double[] l = {labels[dataix]};
             Options candidate = candidates.get(k);
             Trainers trainer = (Trainers) candidate.getOpt("trainer");
             trainer.train(x, l);
@@ -246,10 +246,10 @@ public class MagicNet {
             double v = 0.0;
             for (int q = 0; q < test_ix.length; q++) {
                 Vol x = data[test_ix[q]];
-//                int[] l = labels[test_ix[q]];
-                int l = labels[test_ix[q]];
+                //                int[] l = labels[test_ix[q]];
+                double l = labels[test_ix[q]];
                 net.forward(x);
-                int yhat = net.getPrediction();
+                double yhat = net.getPrediction();
                 v += (yhat == l ? 1.0 : 0.0);
             }
             v /= test_ix.length;
@@ -291,9 +291,9 @@ public class MagicNet {
         return xout;
     }
 
-    public int predict(Vol data) {
+    public double predict(Vol data) {
         Vol xout = predictSoft(data);
-        int predicted_label = -1;
+        double predicted_label = -1;
         if (xout.getW().length != 0) {
             Options stats = Utils.maxmin(xout.getW());
             predicted_label = (int) stats.getOpt("maxi");

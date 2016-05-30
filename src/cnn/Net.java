@@ -26,7 +26,10 @@ public class Net {
         defs = desugar(defs);
 
         layers = new ArrayList();
+        System.out.println("Length def = "+defs.length);
         for (int i = 0; i < defs.length; i++) {
+            System.out.println("make layer " + i);
+            System.out.println("++++++++++++++++++++++++");
             Options def = defs[i];
             if (i > 0) {
                 LayerInput prev = layers.get(i - 1);
@@ -95,7 +98,7 @@ public class Net {
         return act;
     }
 
-    public double getCostLoss(Vol v, int[] y) {
+    public double getCostLoss(Vol v, double[] y) {
         this.forward(v, false);
         int N = layers.size();
         double loss = layers.get(N - 1).backward(y);
@@ -110,7 +113,7 @@ public class Net {
 //        }
 //        return loss;
 //    }
-    public double backward(int[] y) {
+    public double backward(double[] y) {
         int N = layers.size();
         double loss = layers.get(N - 1).backward(y);
         for (int i = N - 2; i >= 0; i--) {

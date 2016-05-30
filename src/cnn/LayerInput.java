@@ -24,9 +24,32 @@ public class LayerInput {
 //    public LayerInput(Vol vol, Options opt) {
     public LayerInput(Options opt) {
 //        this.vol = vol;
-        out_depth = (int) opt.getOpt(new String[]{"out_depth", "depth"}, 0);
-        out_sx = (int) opt.getOpt(new String[]{"out_sx", "sx", "width"}, 1);
-        out_sy = (int) opt.getOpt(new String[]{"out_sy", "sy", "height"}, 1);
+//        out_depth = (int) opt.getOpt(new String[]{"out_depth", "depth"}, 0);
+//        out_sx = (int) opt.getOpt(new String[]{"out_sx", "sx", "width"}, 1);
+//        out_sy = (int) opt.getOpt(new String[]{"out_sy", "sy", "height"}, 1);
+
+        if (opt.find("out_depth")) {
+            out_depth = (int) opt.getOpt("out_depth", 0);
+        } else {
+            out_depth = (int) opt.getOpt("depth", 0);
+        }
+
+        if (opt.find("out_sx")) {
+            out_sx = (int) opt.getOpt("out_sx", 1);
+        } else if (opt.find("sx")) {
+            out_sx = (int) opt.getOpt("sx", 1);
+        } else {
+            out_sx = (int) opt.getOpt("width", 1);
+        }
+
+        if (opt.find("out_sy")) {
+            out_sy = (int) opt.getOpt("out_sy", 1);
+        } else if (opt.find("sy")) {
+            out_sy = (int) opt.getOpt("sy", 1);
+        } else {
+            out_sy = (int) opt.getOpt("height", 1);
+        }
+
         layer_type = "input";
     }
 
@@ -43,11 +66,11 @@ public class LayerInput {
         return out_act;
     }
 
-    public double backward(int y) {
+    public double backward(double y) {
         return 0;
     }
 
-    public double backward(int[] y) {
+    public double backward(double[] y) {
         return 0;
     }
 

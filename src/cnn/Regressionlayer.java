@@ -48,7 +48,7 @@ public class Regressionlayer extends LayerLoss {
 //        return loss;
 //    }
     @Override
-    public double backward(int[] y) {
+    public double backward(double[] y) {
         if (y.length == 1) {
             Vol x = getIn_act();
             x.setDw(new double[x.getW().length]);

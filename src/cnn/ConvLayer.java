@@ -13,7 +13,7 @@ import java.util.List;
  * @author dee
  */
 public class ConvLayer extends LayerDotProducts {
-
+    
     private int in_depth;
     private int in_sx;
     private int in_sy;
@@ -21,6 +21,7 @@ public class ConvLayer extends LayerDotProducts {
     private int sy;
     private int stride;
     private int pad;
+    private double bias;
 
 //    public ConvLayer(Vol vol, Options opt) {
     public ConvLayer(Options opt) {
@@ -31,18 +32,20 @@ public class ConvLayer extends LayerDotProducts {
         in_depth = (int) opt.getOpt("in_depth");
         in_sx = (int) opt.getOpt("in_sx");
         in_sy = (int) opt.getOpt("in_sy");
-
+        
         sy = (int) opt.getOpt("sy", sx);
         stride = (int) opt.getOpt("stride", 1);
         pad = (int) opt.getOpt("pad", 0);
-
+        
         setOut_sx(Math.floorDiv(in_sx + pad * 2 - sx, stride) + 1);
         setOut_sy(Math.floorDiv(in_sy + pad * 2 - sy, stride) + 1);
         setLayer_type("conv");
+        bias = (double) opt.getOpt("bias_pref", 0.0);
         setFilters(new Vol[getOut_depth()]);
         for (int i = 0; i < getOut_depth(); i++) {
-            setFilters(i, new Vol(sx, sy, in_depth, 0));
+            setFilters(i, new Vol(sx, sy, in_depth, bias));
         }
+        setBiases(new Vol(1, 1, getOut_depth(), bias));
     }
 
 //    public ConvLayer(Vol vol, int out_sx, int out_sy, int out_depth, int in_depth,
@@ -72,10 +75,10 @@ public class ConvLayer extends LayerDotProducts {
     public Vol forward(Vol V, boolean is_training) {
         setIn_act(V);
         Vol A = new Vol(getOut_sx(), getOut_sy(), getOut_depth(), 0);
-
+        
         int V_sx = V.getSx();
         int V_sy = V.getSy();
-
+        
         for (int d = 0; d < getOut_depth(); d++) {
             Vol f = getFilters(d);
             int x = -pad;
@@ -105,15 +108,15 @@ public class ConvLayer extends LayerDotProducts {
         setOut_act(A);
         return A;
     }
-
+    
     @Override
     public void backward() {
         Vol V = getIn_act();
         V.setDw(new double[V.getW().length]);
-
+        
         int V_sx = V.getSx();
         int V_sy = V.getSy();
-
+        
         for (int d = 0; d < getOut_depth(); d++) {
             Vol f = getFilters(d);
             int x = -pad;
@@ -141,7 +144,7 @@ public class ConvLayer extends LayerDotProducts {
             }
         }
     }
-
+    
     @Override
     public List<Options> getParamsAndGrads() {
         List<Options> response = new ArrayList();
@@ -161,7 +164,7 @@ public class ConvLayer extends LayerDotProducts {
         response.add(opt);
         return response;
     }
-
+    
     @Override
     public Options toJSON() {
         Options opt = super.toJSON();
@@ -177,61 +180,61 @@ public class ConvLayer extends LayerDotProducts {
         opt.put("biases", biases);
         return opt;
     }
-
+    
     public int getIn_depth() {
         return in_depth;
     }
-
+    
     public void setIn_depth(int in_depth) {
         this.in_depth = in_depth;
     }
-
+    
     public int getIn_sx() {
         return in_sx;
     }
-
+    
     public void setIn_sx(int in_sx) {
         this.in_sx = in_sx;
     }
-
+    
     public int getIn_sy() {
         return in_sy;
     }
-
+    
     public void setIn_sy(int in_sy) {
         this.in_sy = in_sy;
     }
-
+    
     public int getSx() {
         return sx;
     }
-
+    
     public void setSx(int sx) {
         this.sx = sx;
     }
-
+    
     public int getSy() {
         return sy;
     }
-
+    
     public void setSy(int sy) {
         this.sy = sy;
     }
-
+    
     public int getStride() {
         return stride;
     }
-
+    
     public void setStride(int stride) {
         this.stride = stride;
     }
-
+    
     public int getPad() {
         return pad;
     }
-
+    
     public void setPad(int pad) {
         this.pad = pad;
     }
-
+    
 }

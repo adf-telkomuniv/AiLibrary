@@ -51,54 +51,45 @@ public class Utils {
         return false;
     }
 
-    public static boolean listContains(List<Integer> lst, int x) {
-        for (int i = 0; i < lst.size(); i++) {
-            if (lst.get(i) == x) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public static int[] arrUnique(int[] arr) {
-        List<Integer> temp = new ArrayList();
+    public static double[] arrUnique(double[] arr) {
+        List<Double> temp = new ArrayList();
         for (int i = 0; i < arr.length; i++) {
             if (!listContains(temp, arr[i])) {
                 temp.add(arr[i]);
             }
         }
-        int[] re = new int[temp.size()];
+        double[] re = new double[temp.size()];
         for (int i = 0; i < re.length; i++) {
             re[i] = temp.get(i);
         }
         return re;
     }
 
-    public static boolean listContains(List<int[]> lst, int[] x) {
+    public static boolean listContains(List<double[]> lst, double[] x) {
         for (int i = 0; i < lst.size(); i++) {
-            int[] d = lst.get(i);
-            if(d.length != x.length){
+            double[] d = lst.get(i);
+            if (d.length != x.length) {
                 continue;
             }
             for (int j = 0; j < d.length; j++) {
-                if(d[i] != x[i]){
-                    continue;
+                if (d[i] != x[i]) {
+                    break;
                 }
-                
+
             }
             return true;
         }
         return false;
     }
 
-    public static int[][] arrUnique(int[][] arr) {
-        List<int[]> temp = new ArrayList();
+    public static double[][] arrUnique(double[][] arr) {
+        List<double[]> temp = new ArrayList();
         for (int i = 0; i < arr.length; i++) {
             if (!listContains(temp, arr[i])) {
                 temp.add(arr[i]);
             }
         }
-        int[][] re = new int[temp.size()][];
+        double[][] re = new double[temp.size()][];
         for (int i = 0; i < re.length; i++) {
             re[i] = temp.get(i);
         }

@@ -21,10 +21,11 @@ public class LayerDotProducts extends LayerInput {
     public LayerDotProducts(Options opt) {
 //        super(vol, opt);
         super(opt);
-        l1_decay_mul = (double) opt.getOpt("l1_decay_mul", 0);
-        l2_decay_mul = (double) opt.getOpt("l2_decay_mul", 1);
-        bias = (double) opt.getOpt("bias_pref", 0);
-        biases = new Vol(1, 1, getOut_depth(), getBias());
+        l1_decay_mul = (double) opt.getOpt("l1_decay_mul", 0.0);
+        l2_decay_mul = (double) opt.getOpt("l2_decay_mul", 1.0);
+        bias = (double) opt.getOpt("bias_pref", 0.0);
+        System.out.println("bias = " + bias);
+//        biases = new Vol(1, 1, getOut_depth(), getBias());
 
     }
 

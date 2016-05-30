@@ -31,8 +31,8 @@ public class SVMLayer extends LayerLoss {
     }
 
     @Override
-    public double backward(int[] dy) {
-        int y = dy[0];
+    public double backward(double[] dy) {
+        int y = (int) dy[0];
         Vol x = getIn_act();
         x.setDw(new double[x.getW().length]);
         double yscore = x.getW(y);
