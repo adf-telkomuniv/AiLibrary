@@ -21,8 +21,6 @@ public class FullyConnLayer extends LayerDotProducts {
 
     public FullyConnLayer(Options opt) {
         super(opt);
-        System.out.println("------------------------");
-        System.out.println(opt);
 //        int b1 = (int) opt.getOpt("num_neurons");
 //        System.out.println("b1 = " + b1);
 //        int b2 = (int) opt.getOpt("filters");
@@ -36,7 +34,6 @@ public class FullyConnLayer extends LayerDotProducts {
         } else {
             out_depth = (int) opt.getOpt("filters", 0);
         }
-        System.out.println("out = " + out_depth);
 
         in_depth = (int) opt.getOpt("in_depth");
         in_sx = (int) opt.getOpt("in_sx");
@@ -47,7 +44,6 @@ public class FullyConnLayer extends LayerDotProducts {
         layer_type = "fc";
 
         bias = (double) opt.getOpt("bias_pref", 0.0);
-        System.out.println("bias fully = " + bias);
 
         filters = new Vol[out_depth];
         for (int i = 0; i < out_depth; i++) {

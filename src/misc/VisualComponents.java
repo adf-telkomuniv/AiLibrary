@@ -64,6 +64,11 @@ public class VisualComponents extends JComponent {
         paintDot((Graphics2D) getGraphics());
     }
 
+    public void addDot(double x1, double x2, Color color, int dim) {
+        dots.add(new Dot(x1, x2, color));
+        paintDot((Graphics2D) getGraphics(), dim);
+    }
+
     public void clearDots() {
         depaintDot((Graphics2D) getGraphics());
         dots.clear();
@@ -72,8 +77,8 @@ public class VisualComponents extends JComponent {
 
     private final LinkedList<Line> lines = new LinkedList<Line>();
 
-    public void addLine(double x1, double x2, double x3, double x4, Color color) {
-        lines.add(new Line(x1, x2, x3, x4, color));
+    public void addLine(double x1, double y1, double x2, double y2, Color color) {
+        lines.add(new Line(x1, y1, x2, y2, color));
         paintLine((Graphics2D) getGraphics());
     }
 
@@ -88,6 +93,15 @@ public class VisualComponents extends JComponent {
         for (Dot dot : dots) {
             g.setColor(dot.color);
             Shape d = new Ellipse2D.Double(dot.x1, dot.y1, 15, 15);
+            g.draw(d);
+        }
+    }
+
+    protected void paintDot(Graphics2D g, int dim) {
+        super.paintComponent(g);
+        for (Dot dot : dots) {
+            g.setColor(dot.color);
+            Shape d = new Ellipse2D.Double(dot.x1, dot.y1, dim, dim);
             g.draw(d);
         }
     }

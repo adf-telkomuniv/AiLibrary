@@ -27,7 +27,6 @@ public class Vol {
      * @param c default set 0
      */
     public Vol(int sx, int sy, int depth, double c) {
-        System.out.println(sx + ", " + sy + ", " + depth + ", " + c);
         this.sx = sx;
         this.sy = sy;
         this.depth = depth;

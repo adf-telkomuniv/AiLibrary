@@ -60,7 +60,7 @@ public class Trainers {
         net.forward(x, true);
         Date end = new Date();
         long fwd_time = end.getTime() - start.getTime();
-        System.out.println("forward time = " + (fwd_time / (1000 * 60 * 60)));
+//        System.out.println("forward time = " + (fwd_time / (1000 * 60 * 60)));
 
         start = new Date();
         double cost_loss = net.backward(y);
@@ -68,12 +68,12 @@ public class Trainers {
         double l1_decay_loss = 0.0;
         end = new Date();
         long bwd_time = end.getTime() - start.getTime();
-        System.out.println("backward time = " + (bwd_time / (1000 * 60 * 60)));
+//        System.out.println("backward time = " + (bwd_time / (1000 * 60 * 60)));
 
         //check if regression
-        if (regression && y.length <= 1) {
-            throw new IllegalStateException("y must be an array for regression type");
-        }
+//        if (regression && y.length <= 1) {
+//            throw new IllegalStateException("y must be an array for regression type");
+//        }
 
         k++;
         if (k % batch_size == 0) {

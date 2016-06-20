@@ -25,7 +25,6 @@ public class LayerInput {
         } else {
             out_depth = (int) opt.getOpt("depth", 0);
         }
-        System.out.println("out_depth = " + out_depth);
 
         if (opt.find("out_sx")) {
             out_sx = (int) opt.getOpt("out_sx", 1);

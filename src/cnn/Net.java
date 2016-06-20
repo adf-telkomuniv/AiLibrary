@@ -26,9 +26,7 @@ public class Net {
         defs = desugar(defs);
 
         layers = new ArrayList();
-        System.out.println("Length def = " + defs.length);
         for (int i = 0; i < defs.length; i++) {
-            System.out.println("make layer " + i);
             Options def = defs[i];
             if (i > 0) {
                 LayerInput prev = layers.get(i - 1);
@@ -37,8 +35,6 @@ public class Net {
                 def.put("in_depth", prev.out_depth);
             }
             String type = (String) def.getOpt("type");
-            System.out.println("layer type = " + type);
-            System.out.println("++++++++++++++++++++++++");
             switch (type) {
                 case "fc":
                     layers.add(new FullyConnLayer(def));
@@ -129,43 +125,30 @@ public class Net {
             List<Options> layer_responses = new ArrayList();
 
             if (layer instanceof ConvLayer) {
-                System.out.println("conv");
                 layer_responses = ((ConvLayer) layer).getParamsAndGrads();
             } else if (layer instanceof DropoutLayer) {
-                System.out.println("drop");
                 layer_responses = ((DropoutLayer) layer).getParamsAndGrads();
             } else if (layer instanceof FullyConnLayer) {
-                System.out.println("full");
                 layer_responses = ((FullyConnLayer) layer).getParamsAndGrads();
             } else if (layer instanceof MaxOutLayer) {
-                System.out.println("max");
                 layer_responses = ((MaxOutLayer) layer).getParamsAndGrads();
             } else if (layer instanceof NormalizationLayer) {
-                System.out.println("norm");
                 layer_responses = ((NormalizationLayer) layer).getParamsAndGrads();
             } else if (layer instanceof PoolLayer) {
-                System.out.println("pool");
                 layer_responses = ((PoolLayer) layer).getParamsAndGrads();
             } else if (layer instanceof RegressionLayer) {
-                System.out.println("reg");
                 layer_responses = ((RegressionLayer) layer).getParamsAndGrads();
             } else if (layer instanceof ReluLayer) {
-                System.out.println("rel");
                 layer_responses = ((ReluLayer) layer).getParamsAndGrads();
             } else if (layer instanceof SVMLayer) {
-                System.out.println("svm");
                 layer_responses = ((SVMLayer) layer).getParamsAndGrads();
             } else if (layer instanceof SigmoidLayer) {
-                System.out.println("sig");
                 layer_responses = ((SigmoidLayer) layer).getParamsAndGrads();
             } else if (layer instanceof SoftmaxLayer) {
-                System.out.println("soft");
                 layer_responses = ((SoftmaxLayer) layer).getParamsAndGrads();
             } else if (layer instanceof TanhLayer) {
-                System.out.println("tanh");
                 layer_responses = ((TanhLayer) layer).getParamsAndGrads();
             } else {
-                System.out.println("input");
                 layer_responses = layer.getParamsAndGrads();
             }
 //            List<Options> layer_responses = layer.getParamsAndGrads();                      
@@ -205,9 +188,6 @@ public class Net {
         List<Options> new_defs = new ArrayList();
         for (int i = 0; i < defs.length; i++) {
             Options def = defs[i];
-            System.out.println("desugar----");
-            System.out.println(def);
-            System.out.println("---");
             if (def.getOpt("type").equals("softmax")) {
                 Options opt = new Options();
                 opt.put("type", "fc");
@@ -268,11 +248,6 @@ public class Net {
                 }
             }
         }
-        System.out.println("desugar results : ");
-        for (Options new_def : new_defs) {
-            System.out.println(new_def);
-        }
-        System.out.println("========================");
         return new_defs.toArray(new Options[new_defs.size()]);
     }
 
