@@ -331,12 +331,12 @@ public class Ai1DGui2 extends javax.swing.JFrame {
 
         defs[1] = new Options();
         defs[1].put("type", "fc");
-        defs[1].put("num_neurons", 40);
+        defs[1].put("num_neurons", 30);
         defs[1].put("activation", "sigmoid");
 
 //        defs[2] = new Options();
 //        defs[2].put("type", "fc");
-//        defs[2].put("num_neurons", 20);
+//        defs[2].put("num_neurons", 4);
 //        defs[2].put("activation", "sigmoid");
 
         defs[2] = new Options();
