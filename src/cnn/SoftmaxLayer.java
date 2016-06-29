@@ -26,7 +26,7 @@ public class SoftmaxLayer extends LayerLoss {
     @Override
     public Vol forward(Vol V, boolean is_training) {
         in_act = (V);
-        System.out.println("out_depth softmax = " + out_depth);
+//        System.out.println("out_depth softmax = " + out_depth);
         Vol A = new Vol(1, 1, out_depth, 0.0);
         double[] as = V.w;
         double amax = V.w[0];

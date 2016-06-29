@@ -5,7 +5,6 @@
  */
 package misc;
 
-import classifier.LinearClassifier;
 import cnn.Net;
 import cnn.Options;
 import cnn.Trainers;
@@ -322,7 +321,7 @@ public class Ai1DGui2 extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     public void init() {
-        Options[] defs = new Options[3];
+        Options[] defs = new Options[4];
         defs[0] = new Options();
         defs[0].put("type", "input");
         defs[0].put("out_sx", 1);
@@ -334,14 +333,14 @@ public class Ai1DGui2 extends javax.swing.JFrame {
         defs[1].put("num_neurons", 30);
         defs[1].put("activation", "sigmoid");
 
-//        defs[2] = new Options();
-//        defs[2].put("type", "fc");
-//        defs[2].put("num_neurons", 4);
-//        defs[2].put("activation", "sigmoid");
-
         defs[2] = new Options();
-        defs[2].put("type", "regression");
-        defs[2].put("num_neurons", 1);
+        defs[2].put("type", "fc");
+        defs[2].put("num_neurons", 4);
+        defs[2].put("activation", "sigmoid");
+
+        defs[3] = new Options();
+        defs[3].put("type", "regression");
+        defs[3].put("num_neurons", 1);
 
         net = new Net();
         net.makeLayers(defs);
