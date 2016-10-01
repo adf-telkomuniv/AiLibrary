@@ -88,7 +88,7 @@ public class ConvLayer extends LayerDotProducts {
             Vol f = this.filters[d];
             int x;
             int y = -this.pad;
-            for (int ay = 0; y < out_depth; y += xy_stride, ay++) {
+            for (int ay = 0; y < out_sy; y += xy_stride, ay++) {
                 x = -this.pad;
                 for (int ax = 0; ax < out_sx; x += xy_stride, ax++) {
                     double a = 0.0;
