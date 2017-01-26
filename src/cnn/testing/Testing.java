@@ -19,7 +19,7 @@ public class Testing {
 
     public static void main(String[] args) {
         Testing t = new Testing();
-        t.test2();
+        t.test1();
     }
 
     public void test2() {
