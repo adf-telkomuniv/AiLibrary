@@ -1,9 +1,0 @@
-on(a,c)
-ontable(c)
-ontable(b)
-ontable(e)
-on(d,e)
-clear(a)
-clear(b)
-clear(d)
-armempty

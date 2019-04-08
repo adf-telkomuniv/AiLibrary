@@ -1,0 +1,4 @@
+ontable(a)
+on(b,a)
+on(c,b)
+clear(c)

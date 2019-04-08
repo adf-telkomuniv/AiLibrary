@@ -1,6 +1,0 @@
-on(c,a)
-ontable(a)
-on(b,d)
-ontable(d)
-clear(c)
-clear(b)
